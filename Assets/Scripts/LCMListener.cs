@@ -25,6 +25,9 @@ public class LCMListener : MonoBehaviour
     private double pressure;
     public double Pressure {get {return pressure;}}
 
+    private double rope_length;
+    public double RopeLength {get {return rope_length;}}
+
     LCM.LCM.LCM myLCM;
 
 
@@ -37,6 +40,7 @@ public class LCMListener : MonoBehaviour
 
         myLCM.SubscribeAll(new SimpleSubscriber());
 
+        StartCoroutine(SimulateRopeLength(3, 4, .01d));
 
     }
 
@@ -61,11 +65,30 @@ public class LCMListener : MonoBehaviour
             else if (channel == "MWT_STEREO_IMAGE")
             {
                 mwt.stereo_image_t msg = new mwt.stereo_image_t(dins);
-                Debug.Log(msg.width);
+            }
+            else if (channel == "MINIROV_ROWE_DVL")
+            {
+                mwt.mini_rov_rowe_dvl_t msg = new mwt.mini_rov_rowe_dvl_t(dins);
+                Debug.Log(msg);
             }
             else
             {
-                Debug.Log("Unknown Channel: " + channel);
+                // Debug.Log("Unknown Channel: " + channel);
+            }
+        }
+    }
+
+    IEnumerator SimulateRopeLength(double min, double max, double step) 
+    {   while (true) {
+            for (double f = min; f <  max; f += step) 
+            {
+                rope_length = f;
+                yield return new WaitForSeconds(.2f);
+            }
+            for (double f = max; f > min; f -= step) 
+            {
+                rope_length = f;
+                yield return new WaitForSeconds(.2f);
             }
         }
     }

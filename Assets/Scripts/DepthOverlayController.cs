@@ -10,9 +10,11 @@ public class DepthOverlayController : MonoBehaviour
 
     public GameObject depthTextGameObject;
     public GameObject pressureTextGameObject;
+    public GameObject altitudeTextGameObject;
 
     private TextMeshProUGUI depth;
     private TextMeshProUGUI pressure;
+    private TextMeshProUGUI altitude;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,7 @@ public class DepthOverlayController : MonoBehaviour
         listener = listenerGameObject.GetComponent<LCMListener>();
         depth = depthTextGameObject.GetComponent<TextMeshProUGUI>();
         pressure = pressureTextGameObject.GetComponent<TextMeshProUGUI>();
+        altitude = altitudeTextGameObject.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame

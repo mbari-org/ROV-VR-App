@@ -79,6 +79,7 @@
      <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPSubmesh.cs" />
      <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
      <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
+     <Compile Include="Assets\Scripts\DeltaOverlayController.cs" />
      <Compile Include="Assets\Scripts\DepthOverlayController.cs" />
      <Compile Include="Assets\Scripts\LCMListener.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
