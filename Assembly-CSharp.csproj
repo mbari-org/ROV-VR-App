@@ -78,9 +78,7 @@
      <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPInputFieldCaret.cs" />
      <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPSubmesh.cs" />
      <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
-     <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
      <Compile Include="Assets\Scripts\DeltaOverlayController.cs" />
-     <Compile Include="Assets\Scripts\DepthOverlayController.cs" />
      <Compile Include="Assets\Scripts\LCMListener.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
@@ -95,6 +93,9 @@
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+     <Compile Include="Assets\_Cali\AttitudeOverlayController.cs" />
+     <Compile Include="Assets\_Ever\TurnOverlayController.cs" />
+     <Compile Include="Assets\_Nathan\DepthOverlayController.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
@@ -121,6 +122,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+     <None Include="Assets\_Amy\ReadMe.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <Reference Include="UnityEngine">
@@ -309,20 +311,20 @@
     <Reference Include="lcm">
         <HintPath>C:/Users/Erika/ROV-VR/Assets/Plugins/LCM/lcm.dll</HintPath>
     </Reference>
-    <Reference Include="Valve.Newtonsoft.Json">
-        <HintPath>C:/Users/Erika/ROV-VR/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="GLTFSerialization">
         <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/GLTFSerialization.dll</HintPath>
     </Reference>
-    <Reference Include="UnityGLTF">
-        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/UnityGLTF.dll</HintPath>
+    <Reference Include="Ionic.Zip.Unity">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/Ionic.Zip.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
         <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip.Unity">
-        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/Ionic.Zip.Unity.dll</HintPath>
+    <Reference Include="UnityGLTF">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/UnityGLTF.dll</HintPath>
+    </Reference>
+    <Reference Include="Valve.Newtonsoft.Json">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
