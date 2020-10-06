@@ -1,7 +1,7 @@
 # ROV-VR-App
 ## Requirements
 - [Unity Hub](https://unity3d.com/get-unity/download)
-- [Unity 2019.4.10](unityhub://2019.4.10f1/5311b3af6f69)
+- [Unity 2019.4.10](https://unity3d.com/get-unity/download/archive)
 - [LCM](https://lcm-proj.github.io/) (for testing)
 
 ## Get Started
