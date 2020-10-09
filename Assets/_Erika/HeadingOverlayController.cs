@@ -14,8 +14,9 @@ public class HeadingOverlayController : MonoBehaviour
 
     private TextMeshProUGUI headingText;
     private Transform barPosition;
-    private float offsetAdjustment = -15f; //to make arrow line up with values better
-
+    private float headingBarLength = 1620f; 
+    private float offsetAdjustment = 0f; //to make arrow line up with values better
+    private float curvedGUIAdjustment = 15f;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class HeadingOverlayController : MonoBehaviour
     {
         Vector3 targetPos = barPosition.position;
 
-        targetPos.x = -1f * (float) (listener.Yaw/360f) * 1620f + offsetAdjustment;
+        targetPos.x = -1f * (float) (listener.Yaw/360f) * (headingBarLength + curvedGUIAdjustment) + offsetAdjustment;
         var diff = Mathf.Abs(barPosition.position.x - targetPos.x);
         var step = diff < 20 ? .1f : diff;
         barPosition.position =  Vector3.MoveTowards(barPosition.position, targetPos, step );
