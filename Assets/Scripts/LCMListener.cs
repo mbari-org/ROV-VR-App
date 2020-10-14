@@ -28,6 +28,18 @@ public class LCMListener : MonoBehaviour
     private double rope_length;
     public double RopeLength {get {return rope_length;}}
 
+    private double rov_lon;
+    public double ROVLon {get {return rov_lon;}}
+
+    private double rov_lat;
+    public double ROVLat {get {return rov_lat;}} 
+
+    private double ship_lon;
+    public double ShipLon {get {return ship_lon;}}
+
+    private double ship_lat;
+    public double ShipLat {get {return ship_lat;}} 
+
     LCM.LCM.LCM myLCM;
 
 
@@ -69,7 +81,14 @@ public class LCMListener : MonoBehaviour
             else if (channel == "MINIROV_ROWE_DVL")
             {
                 mwt.mini_rov_rowe_dvl_t msg = new mwt.mini_rov_rowe_dvl_t(dins);
-                Debug.Log(msg);
+            }
+            else if (channel == "GEOLOCATION")
+            {
+                mwt.geolocation_t msg = new mwt.geolocation_t(dins);
+                instance.rov_lon = msg.rov_lon;
+                instance.rov_lat = msg.rov_lat;
+                instance.ship_lat = msg.ship_lat;
+                instance.ship_lat = msg.ship_lat;
             }
             else
             {

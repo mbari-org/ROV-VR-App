@@ -45,6 +45,7 @@
      <Compile Include="Assets\Plugins\LCM\MBARI Types\ext_target_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\filter_status_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\gain_scale_status_t.cs" />
+     <Compile Include="Assets\Plugins\LCM\MBARI Types\geolocation_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\header_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\image_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\mini_rov_attitude_t.cs" />
@@ -245,6 +246,18 @@
     </Reference>
     <Reference Include="lcm">
         <HintPath>C:/Users/Erika/ROV-VR/Assets/Plugins/LCM/lcm.dll</HintPath>
+    </Reference>
+    <Reference Include="GLTFSerialization">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/GLTFSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Unity">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/Ionic.Zip.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityGLTF">
+        <HintPath>C:/Users/Erika/ROV-VR/Assets/Sketchfab For Unity/Dependencies/Libraries/UnityGLTF.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json">
         <HintPath>C:/Users/Erika/ROV-VR/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
