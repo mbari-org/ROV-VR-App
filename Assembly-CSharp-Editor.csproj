@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{ef2a8017-828c-3487-a5c3-a74078644ace}</ProjectGuid>
+    <ProjectGuid>{00e8746b-5c6a-edaa-ecff-80b3208bdfb7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -238,16 +238,28 @@
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.10f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="lcm">
-        <HintPath>C:/Users/Erika/ROV-VR/Assets/Plugins/LCM/lcm.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/Plugins/LCM/lcm.dll</HintPath>
+    </Reference>
+    <Reference Include="GLTFSerialization">
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/Sketchfab For Unity/Dependencies/Libraries/GLTFSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Unity">
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/Sketchfab For Unity/Dependencies/Libraries/Ionic.Zip.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/Sketchfab For Unity/Dependencies/Libraries/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityGLTF">
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/Sketchfab For Unity/Dependencies/Libraries/UnityGLTF.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json">
-        <HintPath>C:/Users/Erika/ROV-VR/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/PackageCache/com.unity.render-pipelines.core@7.3.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/PackageCache/com.unity.render-pipelines.core@7.3.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -604,105 +616,105 @@
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.WindowsMR.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.XR.WindowsMR.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.WindowsMR.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ShaderGraph.Editor">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.WindowsMR">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/Unity.XR.WindowsMR.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.WindowsMR.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-        <HintPath>C:/Users/Erika/ROV-VR/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+        <HintPath>C:/Users/Amy/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{0638838c-f496-1ad6-3068-c823552e2a68}</Project>
+      <Project>{26990638-600f-46ea-c496-4a9656219d02}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{7e78ccbb-dee9-104a-9f44-4798d22075ec}</Project>
+      <Project>{c40af425-567a-3c4f-bae7-57d21498d8d1}</Project>
       <Name>Assembly-CSharp</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="SteamVR_Actions.csproj">
-      <Project>{4a59f404-8663-667d-ae91-87297a2fa9a7}</Project>
+      <Project>{48e089a3-f3b0-5f08-71c5-1a73e3a88b2f}</Project>
       <Name>SteamVR_Actions</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="SteamVR_Input_Editor.csproj">
-      <Project>{b8ebbad7-c2a4-aad4-f61e-b36648c87c8a}</Project>
+      <Project>{e946388f-017e-0a87-9718-eb29f38aa7e0}</Project>
       <Name>SteamVR_Input_Editor</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="SteamVR_Editor.csproj">
-      <Project>{e6b05dce-2704-df39-d77f-d8baf4fb4b4b}</Project>
+      <Project>{cbf7e8a0-adc0-22c2-21ac-186c8f49ba89}</Project>
       <Name>SteamVR_Editor</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="SteamVR.csproj">
-      <Project>{aa6525c9-de4a-2085-4dbd-0fbe80100856}</Project>
+      <Project>{a674dfde-f8ea-f0c9-4996-a97c04c9291a}</Project>
       <Name>SteamVR</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="SteamVR_Windows_EditorHelper.csproj">
-      <Project>{e1c9ae96-79a8-5374-b686-141f0a0b0495}</Project>
+      <Project>{aa7287e0-f8d9-5d85-ce28-57830eb64b5b}</Project>
       <Name>SteamVR_Windows_EditorHelper</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
