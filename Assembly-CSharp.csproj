@@ -78,6 +78,7 @@
      <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPInputFieldCaret.cs" />
      <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPSubmesh.cs" />
      <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
+     <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
      <Compile Include="Assets\Scripts\DeltaOverlayController.cs" />
      <Compile Include="Assets\Scripts\FakeLCMPublisher.cs" />
      <Compile Include="Assets\Scripts\GeolocationController.cs" />
@@ -97,7 +98,6 @@
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-     <Compile Include="Assets\_Cali\Scripts\AttitudeOverlayController.cs" />
      <Compile Include="Assets\_Nathan\DepthOverlayController.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
