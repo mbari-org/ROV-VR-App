@@ -88,7 +88,7 @@ public class LCMListener : MonoBehaviour
                 instance.rov_lon = msg.rov_lon;
                 instance.rov_lat = msg.rov_lat;
                 instance.ship_lat = msg.ship_lat;
-                instance.ship_lat = msg.ship_lat;
+                instance.ship_lon = msg.ship_lon;
             }
             else
             {
