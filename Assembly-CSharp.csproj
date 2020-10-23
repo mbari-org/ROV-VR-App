@@ -94,6 +94,7 @@
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\_Cali\AttitudeOverlayController.cs" />
+     <Compile Include="Assets\_Erika\Geolocation\GeolocationController.cs" />
      <Compile Include="Assets\_Erika\HeadingOverlayController.cs" />
      <Compile Include="Assets\_Ever\TurnOverlayController.cs" />
      <Compile Include="Assets\_Nathan\DepthOverlayController.cs" />
