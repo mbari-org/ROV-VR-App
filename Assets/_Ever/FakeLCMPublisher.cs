@@ -126,7 +126,7 @@ public class FakeLCMPublisher : MonoBehaviour
         double secondsElapsed = ts.TotalSeconds;
 
         // Map that time elapsed to a yaw angle
-        double simulatedYaw = SecondsElapsedToYaw(secondsElapsed, YawDataOptions.TwoFullRotationsRight);
+        double simulatedYaw = SecondsElapsedToYaw(secondsElapsed, YawDataOptions.TwoFullRotationsLeftFast);
 
         // UnityEngine.Debug.Log(ts.Milliseconds);
 

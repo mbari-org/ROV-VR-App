@@ -7,7 +7,7 @@ using System.IO.Ports;
 using System.Security.AccessControl;
 using System.Collections.Specialized;
 
-// Useful References for Ever:
+// Useful References:
 // - https://docs.unity3d.com/ScriptReference/Transform.Rotate.html
 // - https://docs.unity3d.com/ScriptReference/GameObject.SetActive.html (for arrows)
 
@@ -64,13 +64,8 @@ public class TurnOverlayController : MonoBehaviour
         return degrees / 360.0;
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateTurnValues()
     {
-        //if (numUpdates == 0)
-        //{
-        // Debug.Log("Yaw: " + listener.Yaw.ToString());
-
         // Update Yaw and Delta values
         previousYaw = currentYaw;
         currentYaw = listener.Yaw;
@@ -86,41 +81,34 @@ public class TurnOverlayController : MonoBehaviour
         {
             turnOffset = turnOffset - 360.0;
         }
+    }
 
-        // Rotate the compass relative to its last position
-        rotationYaw = currentDelta - previousDelta;
-        compassGameObject.transform.Rotate(0.0f, (float)rotationYaw, 0.0f, Space.World);
+    void UpdateCompassOverlay()
+    {
+        // Set the rotation of the compass so that it matches the current heading
+        compassGameObject.transform.rotation = Quaternion.Euler(90.0f, (float) currentYaw, 0.0f);
+    }
 
+    void UpdateTextDisplay()
+    {
         // Calculate turns
         turns = DegreesToTurns(currentDelta);
 
-        UnityEngine.Debug.Log(turns);
-        //UnityEngine.Debug.Log(previousDelta);
-        //UnityEngine.Debug.Log(currentDelta);
-        //UnityEngine.Debug.Log(rotationYaw);
+        // Convert turns to string rounded to hundreth place
+        string turnString = turns.ToString("0.00");
 
-        // NOTE: Rotation is relative to where the object is at that point in time
+        // Add a + at the beginning if turns is positive
+        if (turns > 0) { turnString = "+" + turnString; }
 
-        // Split string into before decimal and after decimal
-        // make it so that the latter has one decimal point of precision
-        // combine strings back together
-        // display final string in TurnText
-
-        string yawString = turns.ToString();
-        
-        // TODO: Make this round to the nearest decimal place instead of just cutting off past a certain decmial
-        // Stop here if the yawValue was never set properly
-        string[] yawSubStrings = yawString.Split('.');
-        if (yawSubStrings.Length != 2) { return; }
-
-        // Cut off certain decimal places
-        yawSubStrings[1] = yawSubStrings[1].Substring(0, 2);
-
-        // Reconnect substrings into big string
-        string turnString = yawSubStrings[0] + "." + yawSubStrings[1];
-
+        // Display new turnString
         turnText.SetText(turnString);
-        //}
-        //numUpdates = numUpdates + 1;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateTurnValues();
+        UpdateCompassOverlay();
+        UpdateTextDisplay();
     }
 }
