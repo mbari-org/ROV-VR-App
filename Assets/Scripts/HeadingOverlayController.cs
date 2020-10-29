@@ -15,7 +15,7 @@ public class HeadingOverlayController : MonoBehaviour
     private TextMeshProUGUI headingText;
     private Transform barPosition;
     private float headingBarLength = 1620f; 
-    private float offsetAdjustment = 0f; //to make arrow line up with values better
+    private float offsetAdjustment = 10f; //to make arrow line up with values better
     private float curvedGUIAdjustment = 15f;
     // Start is called before the first frame update
     void Start()

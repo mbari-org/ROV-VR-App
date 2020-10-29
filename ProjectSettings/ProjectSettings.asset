@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: Olin SCOPE
   productName: ROV-VR
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -635,6 +635,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: UNITY_CCU;CURVEDUI_STEAMVR_INT;CURVEDUI_TMP;CURVEDUI_STEAMVR_2
+    14: UNITY_CCU;CURVEDUI_STEAMVR_INT;CURVEDUI_TMP
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 1
