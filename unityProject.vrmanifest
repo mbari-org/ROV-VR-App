@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.rovvr.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\Erika\\ROV-VR\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "C:\\Users\\Amy\\Documents\\ROV-VR-App\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "ROV-VR [Testing]"
