@@ -51,14 +51,6 @@ public class CurvedUIInputModule : StandaloneInputModule {
     [SerializeField]
     float worldSpaceMouseSensitivity = 1;
 
-    //Foot pedal equivalent key
-    [SerializeField]
-    string footPedalKeyboardClickKey = "space";
-    [SerializeField]
-    Canvas onScreenCanvas = null;
-    [SerializeField]
-    Canvas offScreenCanvas = null;
-
     //SteamVR and Oculus
     [SerializeField]
     Hand usedHand = Hand.Right;
@@ -100,13 +92,6 @@ public class CurvedUIInputModule : StandaloneInputModule {
 
     //Support variables - custom ray
     Ray customControllerRay;
-
-    //Support variables - foot pedal double click
-    bool singleClick = false;
-    bool doubleClick = false;
-    bool clicking = false;
-    float clickTime = 0;
-    float clickDuration = .4f;
 
     //support variables - other
     float dragThreshold = 10.0f;
@@ -186,10 +171,6 @@ public class CurvedUIInputModule : StandaloneInputModule {
         //Gaze setup
         if (gazeTimedClickProgressImage != null)
             gazeTimedClickProgressImage.fillAmount = 0;
-            
-        //Initialize on & off screen canvases
-        onScreenCanvas.enabled = true;
-        offScreenCanvas.enabled = false; 
 
         //setup
 #if CURVEDUI_STEAMVR_LEGACY
@@ -268,35 +249,6 @@ public class CurvedUIInputModule : StandaloneInputModule {
                 break;
             }
             default: goto case CUIControlMethod.MOUSE;
-        }
-
-        //check for foot pedal double-click
-        bool isFootDown = Input.GetKeyDown(footPedalKeyboardClickKey);
-        bool isFootUp = Input.GetKeyUp(footPedalKeyboardClickKey);
-
-        // Determine whether click is a single or double click
-        if (isFootDown) {
-            if (clicking) {
-                doubleClick = true;
-                clicking = false;
-                // Put double-click foot pedal actions under here
-                Debug.Log("Double-Click");
-                // Toggle on & off screen canvases
-                onScreenCanvas.enabled = !onScreenCanvas.enabled;
-                offScreenCanvas.enabled = !offScreenCanvas.enabled; 
-            } else {
-                clicking = true;
-                clickTime = clickDuration;
-            }
-        }
-        if (clicking) {
-            clickTime = clickTime - Time.deltaTime;
-            if (clickTime <= 0) {
-                clicking = false;
-                singleClick = true;
-                // Put single-click foot pedal actions under here
-                Debug.Log("Single-Click");
-            }
         }
 
         //save button pressed state for reference in next frame
@@ -432,7 +384,7 @@ public class CurvedUIInputModule : StandaloneInputModule {
 
     }
 
-    /// <summary>
+          /// <summary>
     /// Sends trigger down / trigger released events to gameobjects under the pointer.
     /// </summary>
     protected virtual void ProcessDownRelease(PointerEventData eventData, bool down, bool released)
@@ -535,15 +487,6 @@ public class CurvedUIInputModule : StandaloneInputModule {
             eventData.pointerEnter = null;
         }
     }
-
-    /// <summary>
-    /// Runs after the process loop is complete - updates click statuses.
-    /// </summary>
-    void LateUpdate()
-     {
-         if (doubleClick) doubleClick = false;
-         if (singleClick) singleClick = false;
-     }
 
     /// <summary>
     /// Create a pointerEventData that stores all the data associated with Vive controller.
