@@ -20,8 +20,14 @@ public class FakeLCMPublisher : MonoBehaviour
     // for tracking time
     private DateTime startTime;
     private DateTime currentTime;
+    private double secondsElapsed;
+
+    // storing fake data
+    private double simulated_yaw;
+    private double simulated_turns;
 
     // for publishing
+    private string publisher_name = "FakeLCMPublisher";
     LCM.LCM.LCM myLCM;
 
     private enum YawDataOptions
@@ -39,19 +45,19 @@ public class FakeLCMPublisher : MonoBehaviour
         myLCM = new LCM.LCM.LCM();
         startTime = DateTime.Now;
     }
-    
+
     double DegreesToRadians(double degrees)
     {
-        return degrees *  Math.PI / 180.0;
+        return degrees * Math.PI / 180.0;
     }
 
-    double SecondsElapsedToYaw(double seconds_elapsed, YawDataOptions yawDataOptions)
+    double SecondsElapsedToAccumYaw(double seconds_elapsed, YawDataOptions yawDataOptions)
     {
         //// Convert the seconds to radians
         //double radians = seconds_elapsed * 180.0 / Math.PI;
 
         // Create a container for the output of the function
-        double simulated_yaw = 0.0;
+        double accumulated_yaw = 0.0;
 
 
         if (yawDataOptions == YawDataOptions.TwoFullRotationsLeft)
@@ -59,32 +65,38 @@ public class FakeLCMPublisher : MonoBehaviour
             // Input seconds into a piece-wise function
             if (seconds_elapsed >= 0 && seconds_elapsed <= 90)
             {
-                simulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed));
+                // Yaw accumulates from 0 to 360 degrees from 0 to 90 seconds
+                accumulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed));
             }
             else if (seconds_elapsed > 90 && seconds_elapsed <= 180)
             {
-                simulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed + 270.0));
+                // Yaw continues accumulating from 360 to 720 degrees from 90 to 180 seconds
+                accumulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed + 270.0)) + 360.0;
             }
             else
             {
-                simulated_yaw = 360.0;
+                // Yaw stops accumulating at 720 degrees
+                accumulated_yaw = 720.0;
             }
         }
 
         else if (yawDataOptions == YawDataOptions.TwoFullRotationsLeftFast)
         {
             // Input seconds into a piece-wise function
-            if (seconds_elapsed >= 0 && seconds_elapsed <= 90.0/5.0)
+            if (seconds_elapsed >= 0 && seconds_elapsed <= 90.0 / 5.0)
             {
-                simulated_yaw = 360.0 * Math.Sin(5.0 * DegreesToRadians(seconds_elapsed));
+                // Yaw accumulates from 0 to 360 degrees from 0 to 90/5 seconds
+                accumulated_yaw = 360.0 * Math.Sin(5.0 * DegreesToRadians(seconds_elapsed));
             }
-            else if (seconds_elapsed > 90.0/5 && seconds_elapsed <= 180.0/5)
+            else if (seconds_elapsed > 90.0 / 5 && seconds_elapsed <= 180.0 / 5)
             {
-                simulated_yaw = 360.0 * Math.Sin(5.0 * DegreesToRadians(seconds_elapsed + 270.0));
+                // Yaw accumulates from 360 to 720 degrees from 90/5 to 180/5 seconds
+                accumulated_yaw = 360.0 * Math.Sin(5.0 * DegreesToRadians(seconds_elapsed + 270.0)) + 360.0;
             }
             else
             {
-                simulated_yaw = 360.0;
+                // Yaw stops accumulating at 720 degrees
+                accumulated_yaw = 720.0;
             }
         }
 
@@ -93,24 +105,41 @@ public class FakeLCMPublisher : MonoBehaviour
             // Input seconds into a piece-wise function
             if (seconds_elapsed >= 0 && seconds_elapsed <= 90)
             {
-                simulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed + 90.0));
+                // Yaw accumulates from 0 to -360 degrees from 0 to 90 seconds
+                accumulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed + 90.0)) - 360.0;
             }
             else if (seconds_elapsed > 90 && seconds_elapsed <= 180)
             {
-                simulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed));
+                // Yaw continues to accumulate from -360 to -720 from 90 to 180 seconds
+                accumulated_yaw = 360.0 * Math.Sin(DegreesToRadians(seconds_elapsed)) - 720.0;
             }
             else
             {
-                simulated_yaw = 360.0;
+                accumulated_yaw = -720.0;
             }
         }
 
         else if (yawDataOptions == YawDataOptions.WiggleLeftAndRight)
         {
-            simulated_yaw = 10.0 * Math.Sin(30.0 * DegreesToRadians(seconds_elapsed)) + 180.0;
+            accumulated_yaw = 10.0 * Math.Sin(30.0 * DegreesToRadians(seconds_elapsed)) + 180.0;
         }
 
-        return simulated_yaw;
+        return accumulated_yaw;
+    }
+
+    void UpdateFakeData()
+    {
+        // Update the time elapsed since the start of the program
+        currentTime = DateTime.Now;
+        TimeSpan ts = currentTime - startTime;
+        secondsElapsed = ts.TotalSeconds;
+
+        // Calculate accumulated yaw
+        double accumulated_yaw = SecondsElapsedToAccumYaw(secondsElapsed, YawDataOptions.TwoFullRotationsLeftFast);
+
+        // Calculate turns and current yaw
+        simulated_yaw = accumulated_yaw % 360.0;
+        simulated_turns = accumulated_yaw / 360.0;
     }
 
     void PublishFakeAttitude()
@@ -118,38 +147,47 @@ public class FakeLCMPublisher : MonoBehaviour
         // Create the appropriate message type
         mwt.mini_rov_attitude_t mini_rov_attitude_t_msg = new mwt.mini_rov_attitude_t();
 
-        // Create fake data dependent on the time
+        // Populate that message
 
-        // get the time elapsed since the beginning of the program
-        currentTime = DateTime.Now;
-        TimeSpan ts = currentTime - startTime;
-        double secondsElapsed = ts.TotalSeconds;
+        // First create and populate a header
+        mwt.header_t header = new mwt.header_t();
+        header.publisher = publisher_name;
 
-        // Map that time elapsed to a yaw angle
-        double simulatedYaw = SecondsElapsedToYaw(secondsElapsed, YawDataOptions.TwoFullRotationsLeftFast);
+        mini_rov_attitude_t_msg.header = header;
+        mini_rov_attitude_t_msg.roll_deg = 0.0;
+        mini_rov_attitude_t_msg.pitch_deg = 0.0;
+        mini_rov_attitude_t_msg.yaw_deg = simulated_yaw;
 
-        // UnityEngine.Debug.Log(ts.Milliseconds);
+        // Publish that message
+        System.String channel_name = "MINIROV_ATTITUDE";
+        myLCM.Publish(channel_name, mini_rov_attitude_t_msg);
+    }
+
+    void PublishFakeTurns()
+    {
+        // Create the appropriate message type
+        //mwt.mini_rov_attitude_t mini_rov_attitude_t_msg = new mwt.mini_rov_attitude_t();
+        mwt.mini_rov_turns_t mini_rov_turns_t_msg = new mwt.mini_rov_turns_t();
 
         // Populate that message
 
         // First create and populate a header
         mwt.header_t header = new mwt.header_t();
-        header.publisher = "Ever's Fake Publisher";
+        header.publisher = publisher_name;
 
-        mini_rov_attitude_t_msg.header = header;
-        mini_rov_attitude_t_msg.roll_deg = 0.0;
-        mini_rov_attitude_t_msg.pitch_deg = 0.0;
-        mini_rov_attitude_t_msg.yaw_deg = simulatedYaw;
+        mini_rov_turns_t_msg.header = header;
+        mini_rov_turns_t_msg.turns = simulated_turns;
 
         // Publish that message
-        System.String channel_name = "MINIROV_ATTITUDE";
-
-        myLCM.Publish(channel_name, mini_rov_attitude_t_msg);
+        System.String channel_name = "MINIROV_TURNS";
+        myLCM.Publish(channel_name, mini_rov_turns_t_msg);
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateFakeData();
         PublishFakeAttitude();
+        PublishFakeTurns();
     }
 }
