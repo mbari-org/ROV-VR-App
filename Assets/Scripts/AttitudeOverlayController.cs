@@ -40,9 +40,9 @@ public class AttitudeOverlayController : MonoBehaviour
     void Update()
     {
         //prints attitude data in unity console
-        Debug.Log("Roll: " + listener.Roll.ToString());
+/*        Debug.Log("Roll: " + listener.Roll.ToString());
         Debug.Log("Pitch: " + listener.Pitch.ToString());
-        Debug.Log("Yaw: " + listener.Yaw.ToString());
+        Debug.Log("Yaw: " + listener.Yaw.ToString());*/
 
         //Rotates cube to angles as described by LCM. changes doubles to floats because quaternion only accepts floats.
         cubeGameObject.transform.rotation = Quaternion.Euler((float)listener.Pitch, (float)listener.Yaw, (float)listener.Roll);
