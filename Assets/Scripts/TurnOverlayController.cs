@@ -21,25 +21,11 @@ public class TurnOverlayController : MonoBehaviour
 
     private TextMeshProUGUI turnText;
 
-    // heading relative from boat to ROV
-    // Currently hardcoded, but must be set automatically in final release
-    private double initYaw = 0.0;
-
-    // Initialize yaw values
-    private double previousYaw;
-    private double currentYaw;
-    private double previousDelta = 0.0;
-    private double currentDelta = 0.0;
-    private double rotationYaw = 0.0;
-    private double turnOffset = 0.0;
-
     // Initialize turns
     private double turns = 0.0;
 
-    // Debugging variables
-    private int numUpdates = 0;
-
-    // reminder: Heading goes from 0->360 (double)
+    // Initialize turn degrees for compass
+    private double turnDegrees = 0.0;
 
     // Start is called before the first frame update
     void Start()
@@ -49,55 +35,29 @@ public class TurnOverlayController : MonoBehaviour
         
         // Set up text display for turn
         turnText = turnLabelGameObject.GetComponent<TextMeshProUGUI>();
-
-        // Set up yaw based on initYaw
-        currentYaw = initYaw;
-    }
-
-    double DegreesToRadians(double degrees)
-    {
-        return degrees * Math.PI / 180.0;
-    }
-
-    double DegreesToTurns(double degrees)
-    {
-        return degrees / 360.0;
     }
 
     void UpdateTurnValues()
     {
-        // Update Yaw and Delta values
-        previousYaw = currentYaw;
-        currentYaw = listener.Yaw;
-        previousDelta = currentDelta;
-        currentDelta = currentYaw - initYaw + turnOffset;
+        // Update turns based on listener's turns
+        turns = listener.Turns;
 
-        // Update the offset based on turns if necessary
-        if (currentYaw <= 90.0 && previousYaw >= 270.0)
-        {
-            turnOffset = turnOffset + 360.0;
-        }
-        else if (currentYaw >= 270.0 && previousYaw <= 90.0)
-        {
-            turnOffset = turnOffset - 360.0;
-        }
+        // Update turn degrees for rotating compass
+        turnDegrees = (turns % 1.0) * 360.0;
     }
 
     void UpdateCompassOverlay()
     {
-        // Set the rotation of the compass so that it matches the current heading
-        compassGameObject.transform.rotation = Quaternion.Euler(90.0f, (float) currentYaw, 0.0f);
+        // Set the rotation of the compass so that it matches the current turns
+        compassGameObject.transform.rotation = Quaternion.Euler(90.0f, (float) turnDegrees, 0.0f);
     }
 
     void UpdateTextDisplay()
     {
-        // Calculate turns
-        turns = DegreesToTurns(currentDelta);
-
         // Convert turns to string rounded to hundreth place
         string turnString = turns.ToString("0.00");
 
-        // Add a + at the beginning if turns is positive
+        // Add a + at the beginning if turns are positive
         if (turns > 0) { turnString = "+" + turnString; }
 
         // Display new turnString

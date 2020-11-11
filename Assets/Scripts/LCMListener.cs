@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using LCM;
 using LCM.LCM;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class LCMListener : MonoBehaviour
 {   
     private static LCMListener instance;
 
-    //mini_rov_attitude_t
+    // mini_rov_attitude_t
     private double roll_deg;
     public double Roll {get {return roll_deg;}}
 
@@ -18,7 +19,11 @@ public class LCMListener : MonoBehaviour
     private double yaw_deg;
     public double Yaw {get {return yaw_deg;}}
 
-    //mini_rov_depth_t
+    // mini_rov_turns_t
+    private double turns;
+    public double Turns {get {return turns;}}
+
+    // mini_rov_depth_t
     private double depth;
     public double Depth {get {return depth;}}
 
@@ -67,6 +72,11 @@ public class LCMListener : MonoBehaviour
                 instance.pitch_deg = msg.pitch_deg;
                 instance.yaw_deg = msg.yaw_deg;
 
+            }
+            else if (channel == "MINIROV_TURNS")
+            {
+                mwt.mini_rov_turns_t msg = new mwt.mini_rov_turns_t(dins);
+                instance.turns = msg.turns;
             }
             else if (channel == "MINIROV_DEPTH")
             {
