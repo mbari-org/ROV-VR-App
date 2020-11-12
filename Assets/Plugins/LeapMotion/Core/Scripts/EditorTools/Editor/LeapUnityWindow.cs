@@ -42,11 +42,12 @@ namespace Leap.Unity {
 
     [MenuItem("Window/Leap Motion")]
     public static void Init() {
-      var window = (LeapUnityWindow)GetWindow(typeof(LeapUnityWindow),
-        utility: true, title: WINDOW_TITLE, focus: true);
-      window.name = "Leap Motion Unity Modules Window";
-      window.minSize = WINDOW_MIN_SIZE;
-      _currentWindow = window;
+      // Commented out to disable annoying pop-up window - uncomment to see LeapMotion window
+      // var window = (LeapUnityWindow)GetWindow(typeof(LeapUnityWindow),
+      //   utility: true, title: WINDOW_TITLE, focus: true);
+      // window.name = "Leap Motion Unity Modules Window";
+      // window.minSize = WINDOW_MIN_SIZE;
+      // _currentWindow = window;
     }
 
     #endregion
