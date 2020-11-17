@@ -76,7 +76,7 @@ public class VRInputModule : BaseInputModule
         if (isDown) {
             if (tapping) {
                 doubleTap = true;
-                // Debug.Log("Double-Click");
+                Debug.Log("Double-Click");
                 tapping = false;
             } else {
                 tapping = true;
@@ -88,7 +88,7 @@ public class VRInputModule : BaseInputModule
             if (tapTime <= 0) {
                 tapping = false;
                 singleTap = true;
-                // Debug.Log("Single-Click");
+                Debug.Log("Single-Click");
             }
         }
 
