@@ -8,13 +8,10 @@ public class ProjectVirtualCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        WebCamDevice[] devices = WebCamTexture.devices;
-        for (int i = 0; i < devices.Length; i++)
-            Debug.Log(devices[i].name + i);
         WebCamTexture webcamTexture = new WebCamTexture();
         Renderer renderer = GetComponent<Renderer>();
-        Debug.Log("Playing Camera: "+ devices[1].name);
-        webcamTexture.deviceName = devices[1].name;
+        Debug.Log("Looking for camera named: OBS-Camera");
+        webcamTexture.deviceName = "OBS-Camera";
         skyBoxMaterial.mainTexture = webcamTexture;
         webcamTexture.Play();
     }
