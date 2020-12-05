@@ -33,6 +33,9 @@ public class LCMListener : MonoBehaviour
     private double rope_length;
     public double RopeLength {get {return rope_length;}}
 
+    private double clump_delta;
+    public double ClumpDelta {get {return clump_delta;}}
+
     private double rov_lon;
     public double ROVLon {get {return rov_lon;}}
 
@@ -75,7 +78,7 @@ public class LCMListener : MonoBehaviour
             }
             else if (channel == "MINIROV_TURNS")
             {
-                mwt.mini_rov_turns_t msg = new mwt.mini_rov_turns_t(dins);
+                mwt.turns_t msg = new mwt.turns_t(dins);
                 instance.turns = msg.turns;
             }
             else if (channel == "MINIROV_DEPTH")
@@ -92,13 +95,22 @@ public class LCMListener : MonoBehaviour
             {
                 mwt.mini_rov_rowe_dvl_t msg = new mwt.mini_rov_rowe_dvl_t(dins);
             }
-            else if (channel == "GEOLOCATION")
+            else if (channel == "SHIP_POSITION")
             {
-                mwt.geolocation_t msg = new mwt.geolocation_t(dins);
-                instance.rov_lon = msg.rov_lon;
-                instance.rov_lat = msg.rov_lat;
-                instance.ship_lat = msg.ship_lat;
-                instance.ship_lon = msg.ship_lon;
+                mwt.position_t msg = new mwt.position_t(dins);
+                instance.ship_lat = msg.latitude_deg;
+                instance.ship_lon = msg.longitude_deg;
+            }
+            else if (channel == "MINIROV_POSITION")
+            {
+                mwt.position_t msg = new mwt.position_t(dins);
+                instance.rov_lat = msg.latitude_deg;
+                instance.rov_lon = msg.longitude_deg;
+            }
+            else if (channel == "CLUMP_STATUS")
+            {
+                mwt.clump_status_t msg = new mwt.clump_status_t(dins);
+                instance.clump_delta = msg.delta_m;
             }
             else
             {

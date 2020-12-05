@@ -168,7 +168,7 @@ public class FakeLCMPublisher : MonoBehaviour
     {
         // Create the appropriate message type
         //mwt.mini_rov_attitude_t mini_rov_attitude_t_msg = new mwt.mini_rov_attitude_t();
-        mwt.mini_rov_turns_t mini_rov_turns_t_msg = new mwt.mini_rov_turns_t();
+        mwt.turns_t mini_rov_turns_t_msg = new mwt.turns_t();
 
         // Populate that message
 
@@ -176,7 +176,6 @@ public class FakeLCMPublisher : MonoBehaviour
         mwt.header_t header = new mwt.header_t();
         header.publisher = publisher_name;
 
-        mini_rov_turns_t_msg.header = header;
         mini_rov_turns_t_msg.turns = simulated_turns;
 
         // Publish that message

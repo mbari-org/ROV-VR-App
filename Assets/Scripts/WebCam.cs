@@ -23,11 +23,11 @@ public class WebCam : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < devices.Length; i++)
-        {
-            Debug.Log(devices[i].name);
-            Debug.Log(i);
-        }
+        // for (int i = 0; i < devices.Length; i++)
+        // {
+        //     Debug.Log(devices[i].name);
+        //     Debug.Log(i);
+        // }
 
         if (cam1 == null)
         {
@@ -37,7 +37,7 @@ public class WebCam : MonoBehaviour
         if (!cam1.isPlaying)
         {
             cam1.Play();
-            Debug.Log(cam1.isPlaying);
+            // Debug.Log(cam1.isPlaying);
         }
 
         background.texture = cam1;

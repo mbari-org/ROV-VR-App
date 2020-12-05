@@ -25,7 +25,7 @@ public class DeltaOverlayController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        deltaValue = Math.Round(listener.RopeLength - listener.Depth, 3);
-        delta.SetText("Delta: " + deltaValue.ToString());
+        deltaValue = Math.Round(listener.ClumpDelta, 3);
+        delta.SetText("Clump Delta: " + deltaValue.ToString());
     }
 }
