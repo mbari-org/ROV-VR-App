@@ -8,6 +8,7 @@ public class WebCam : MonoBehaviour
     private bool camAvailable;
     private WebCamTexture cam1;
     private Texture defaultBackground;
+    private int camIndex = 0;
     public RawImage background;
     public AspectRatioFitter fit;
 
@@ -23,21 +24,27 @@ public class WebCam : MonoBehaviour
             return;
         }
 
-        // for (int i = 0; i < devices.Length; i++)
-        // {
-        //     Debug.Log(devices[i].name);
-        //     Debug.Log(i);
-        // }
+        for (int i = 0; i < devices.Length; i++)
+        {
+            if (devices[i].name != "Leap Dev Kit")
+            {
+                camIndex = i;
+            }
+    
+            Debug.Log(devices[i].name);
+            Debug.Log(i);
+
+        }
 
         if (cam1 == null)
         {
-            cam1 = new WebCamTexture(devices[0].name, Screen.width, Screen.height);
+            cam1 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
         }
 
         if (!cam1.isPlaying)
         {
             cam1.Play();
-            // Debug.Log(cam1.isPlaying);
+            Debug.Log(cam1.isPlaying);
         }
 
         background.texture = cam1;

@@ -121,40 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!21 &10536464
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - PixelSnap: 0
-    - _EnableExternalAlpha: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &59112875
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: -60.8, y: 187.69998, z: 0.000022888184}
+  savedPos: {x: -60.800003, y: 187.69998, z: -0.000015258789}
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 2200, y: 1200}
   savedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0.06666667}
@@ -1689,8 +1655,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781494717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.38}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_LocalPosition: {x: 0, y: 0, z: 2.76}
+  m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 988352938}
   - {fileID: 59112876}
@@ -1701,8 +1667,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.06}
-  m_SizeDelta: {x: 1500, y: 800}
+  m_AnchoredPosition: {x: 0.08, y: 0.74}
+  m_SizeDelta: {x: 6000, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &781494722
 MonoBehaviour:
@@ -1722,7 +1688,7 @@ MonoBehaviour:
   blocksRaycasts: 1
   raycastMyLayerOnly: 1
   forceUseBoxCollider: 0
-  angle: 150
+  angle: 360
   preserveAspect: 1
   vertAngle: 90
   ringFill: 0.5
@@ -1780,7 +1746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: -270.5, y: 0, z: 0}
+  savedPos: {x: -270.5, y: 0.0000019073486, z: -0.000015258789}
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 200, y: 120}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2081,7 +2047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: -352.4, y: 87.40001, z: 0.000022888184}
+  savedPos: {x: -352.4, y: 87.40001, z: -0.000015258789}
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 1300, y: 300}
   savedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0.06666667}
@@ -2606,7 +2572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 233}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1292683038
@@ -2624,7 +2590,7 @@ MonoBehaviour:
   DoNotTesselate: 0
   savedPos: {x: 0, y: 0, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 1500, y: 800}
+  savedRectSize: {x: 6000, y: 800}
   savedColor: {r: 1, g: 1, b: 1, a: 0.392}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1
@@ -3617,7 +3583,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -130}
   m_SizeDelta: {x: 958, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!43 &1892492896
+--- !u!43 &1931383456
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3833,7 +3799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: -270.5, y: 0, z: 0}
+  savedPos: {x: -270.5, y: 0.0000019073486, z: -0.000015258789}
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 200, y: 120}
   savedColor: {r: 1, g: 1, b: 1, a: 0.392}
@@ -3888,6 +3854,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cecf32ca5b59b4b92c7e495ac0f988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!21 &1975464474
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - PixelSnap: 0
+    - _EnableExternalAlpha: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!224 &2005831961 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 222312077006878443, guid: deca83e8d201b684eacf1d822c8b357a,
@@ -16559,7 +16559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: -149.22989, y: 180.6, z: 0.000022888184}
+  savedPos: {x: -149.22993, y: 180.59998, z: -0.000015258789}
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 0.80000305, y: 64.2}
   savedColor: {r: 1, g: 1, b: 1, a: 0.4745098}
@@ -17070,12 +17070,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1892492896}
+      objectReference: {fileID: 1931383456}
     - target: {fileID: 9080182091424278972, guid: 78d442207fbde9f41bc8f1136f92148b,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10536464}
+      objectReference: {fileID: 1975464474}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78d442207fbde9f41bc8f1136f92148b, type: 3}
 --- !u!33 &8609837031619030222

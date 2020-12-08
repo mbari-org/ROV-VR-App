@@ -18,7 +18,7 @@ namespace CurvedUI
 
         public void OnBeginDrag(PointerEventData data)
         {
-            Debug.Log("OnBeginDrag");
+            //Debug.Log("OnBeginDrag");
             Vector2 newPos = Vector2.zero;
             RaycastPosition(out newPos);
 
@@ -32,7 +32,7 @@ namespace CurvedUI
 
         public void OnEndDrag(PointerEventData data)
         {
-            Debug.Log("OnEndDrag");
+            //Debug.Log("OnEndDrag");
 
             isDragged = false;
         }
@@ -41,7 +41,7 @@ namespace CurvedUI
         {
             if (!isDragged) return;
 
-            Debug.Log("OnDrag");
+            //Debug.Log("OnDrag");
 
             //drag the transform along the mouse. We use raycast to determine its position on curved canvas.
             Vector2 newPos = Vector2.zero;
