@@ -9,8 +9,8 @@ public class ProjectVirtualCamera : MonoBehaviour
     void Start()
     {
         WebCamTexture webcamTexture = new WebCamTexture();
-        Debug.Log("Looking for camera named: OBS-Camera");
-        webcamTexture.deviceName = "OBS-Camera";
+        Debug.Log("Looking for camera named: Blackmagic Web Presenter");
+        webcamTexture.deviceName = "Blackmagic Web Presenter";
         skyBoxMaterial.mainTexture = webcamTexture;
         webcamTexture.Play();
     }
