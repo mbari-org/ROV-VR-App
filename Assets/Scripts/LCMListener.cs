@@ -46,7 +46,12 @@ public class LCMListener : MonoBehaviour
     public double ShipLon {get {return ship_lon;}}
 
     private double ship_lat;
-    public double ShipLat {get {return ship_lat;}} 
+    public double ShipLat {get {return ship_lat;}}
+    private double clump_lon;
+    public double ClumpLon { get { return clump_lon; } }
+
+    private double clump_lat;
+    public double ClumpLat { get { return clump_lat; } }
 
     LCM.LCM.LCM myLCM;
 
@@ -106,6 +111,12 @@ public class LCMListener : MonoBehaviour
                 mwt.position_t msg = new mwt.position_t(dins);
                 instance.rov_lat = msg.latitude_deg;
                 instance.rov_lon = msg.longitude_deg;
+            }
+            else if (channel == "CLUMP_POSITION")
+            {
+                mwt.position_t msg = new mwt.position_t(dins);
+                instance.clump_lat = msg.latitude_deg;
+                instance.clump_lon = msg.longitude_deg;       
             }
             else if (channel == "CLUMP_STATUS")
             {
