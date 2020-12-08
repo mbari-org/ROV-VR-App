@@ -64,6 +64,8 @@ public class CurvedUIInputModule : StandaloneInputModule {
     Hand usedHand = Hand.Right;
     [FormerlySerializedAs("controllerTransformOverride")] [SerializeField]
     Transform pointerTransformOverride;
+    [SerializeField]
+    Transform gazePointerTransform;
 
     //SteamVR 2.0 specific
 #if CURVEDUI_STEAMVR_2
@@ -280,10 +282,21 @@ public class CurvedUIInputModule : StandaloneInputModule {
                 doubleClick = true;
                 clicking = false;
                 // Put double-click foot pedal actions under here
-                Debug.Log("Double-Click");
-                // Toggle on & off screen canvases
-                onScreenCanvas.enabled = !onScreenCanvas.enabled;
-                offScreenCanvas.enabled = !offScreenCanvas.enabled; 
+                //Debug.Log("Double-Click");
+                // Switch between different control methods
+                if (CurvedUIInputModule.ControlMethod == CurvedUIInputModule.CUIControlMethod.STEAMVR_2)
+                {
+                    CurvedUIInputModule.ControlMethod = CurvedUIInputModule.CUIControlMethod.CUSTOM_RAY;
+                    pointerTransformOverride = gazePointerTransform;
+                }
+                else if (CurvedUIInputModule.ControlMethod == CurvedUIInputModule.CUIControlMethod.CUSTOM_RAY)
+                {
+                    CurvedUIInputModule.ControlMethod = CurvedUIInputModule.CUIControlMethod.STEAMVR_2;
+                    pointerTransformOverride = null;
+                }
+                //// Toggle on & off screen canvases
+                //onScreenCanvas.enabled = !onScreenCanvas.enabled;
+                //offScreenCanvas.enabled = !offScreenCanvas.enabled; 
             } else {
                 clicking = true;
                 clickTime = clickDuration;
@@ -295,7 +308,7 @@ public class CurvedUIInputModule : StandaloneInputModule {
                 clicking = false;
                 singleClick = true;
                 // Put single-click foot pedal actions under here
-                Debug.Log("Single-Click");
+                //Debug.Log("Single-Click");
             }
         }
 
@@ -896,7 +909,21 @@ public class CurvedUIInputModule : StandaloneInputModule {
 #elif CURVEDUI_STEAMVR_LEGACY
           return UsedHand == Hand.Left ? leftCont.transform : rightCont.transform; 
 #elif CURVEDUI_STEAMVR_2
-            return UsedHand == Hand.Left ? m_leftController.transform : m_rightController.transform;
+
+            if (CurvedUIInputModule.ControlMethod == CurvedUIInputModule.CUIControlMethod.STEAMVR_2)
+            {
+                    return UsedHand == Hand.Left ? m_leftController.transform : m_rightController.transform;
+            }
+            else if (CurvedUIInputModule.ControlMethod == CurvedUIInputModule.CUIControlMethod.CUSTOM_RAY)
+            {
+                return gazePointerTransform;
+            }
+            else
+            {
+                //TODO: make sure this case can't be reached
+                return gazePointerTransform;
+            }
+
 #elif CURVEDUI_GOOGLEVR
           return Pointer.PointerTransform;
 #elif CURVEDUI_UNITY_XR
@@ -905,7 +932,7 @@ public class CurvedUIInputModule : StandaloneInputModule {
           Debug.LogWarning("CURVEDUI: CurvedUIInputModule.ActiveController will only return proper gameobject in  STEAMVR, STEAMVR_LEGACY, OCULUSVR, UNITY_XR or GOOGLEVR control methods.");
           return null;
 #endif
-        }
+    }
     }
 
     /// <summary>
@@ -1001,9 +1028,11 @@ public class CurvedUIInputModule : StandaloneInputModule {
             }
             case CUIControlMethod.CUSTOM_RAY:
             {
-                if(pointerTransformOverride)
-                    return new Ray(pointerTransformOverride.position, pointerTransformOverride.forward);
                 
+                if(pointerTransformOverride)
+                {
+                    return new Ray(pointerTransformOverride.position, pointerTransformOverride.forward);
+                }
                 return CustomControllerRay;
             }
             case CUIControlMethod.STEAMVR_LEGACY: goto case CUIControlMethod.GOOGLEVR;
