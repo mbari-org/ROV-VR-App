@@ -19,23 +19,25 @@ public class WebCam : MonoBehaviour
     public GameObject display4;
     public GameObject display5;
 
+    private GameObject[] displayArray = new GameObject[maxCameras];
     private RawImage[] backgroundArray = new RawImage[maxCameras];
     private AspectRatioFitter[] aspectRatioArray = new AspectRatioFitter[maxCameras];
+    //private Dropdown[] dropdownArray = new Dropdown[maxCameras];
 
     void Start()
     {
-        // TODO: Put this in a loop
-        backgroundArray[0] = display1.GetComponentInChildren(typeof(RawImage)) as RawImage;
-        backgroundArray[1] = display2.GetComponentInChildren(typeof(RawImage)) as RawImage;
-        backgroundArray[2] = display3.GetComponentInChildren(typeof(RawImage)) as RawImage;
-        backgroundArray[3] = display4.GetComponentInChildren(typeof(RawImage)) as RawImage;
-        backgroundArray[4] = display5.GetComponentInChildren(typeof(RawImage)) as RawImage;
+        displayArray[0] = display1;
+        displayArray[1] = display2;
+        displayArray[2] = display3;
+        displayArray[3] = display4;
+        displayArray[4] = display5;
 
-        aspectRatioArray[0] = display1.GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
-        aspectRatioArray[1] = display2.GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
-        aspectRatioArray[2] = display3.GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
-        aspectRatioArray[3] = display4.GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
-        aspectRatioArray[4] = display5.GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
+        for (int i = 0; i < maxCameras; i++)
+        {
+            backgroundArray[i] = displayArray[i].GetComponentInChildren(typeof(RawImage)) as RawImage;
+            aspectRatioArray[i] = displayArray[i].GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
+            //dropdownArray[i] = displayArray[i].GetComponentInChildren(typeof(Dropdown)) as Dropdown;
+        }
 
         // Find Webcams
         WebCamDevice[] devices = WebCamTexture.devices;
