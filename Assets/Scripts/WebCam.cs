@@ -4,10 +4,12 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 // TODO: Disable unused displays
-// TODO: Release camera when deselected
+// TODO: Release unused cameras (having them all run might affect runtime?)
 // TODO: Figure out if aspect ratio fitter is necessary
-// TODO: integrate skybox camera
 // TODO: enable hotplugging
+
+// Note: Some cameras will throw a "could not start graph" and "could not pause pControl" error - 
+// these will just not be displayed, but this could be handled more elegantly
 // Note: all webcams need to be plugged in in advance
 
 public class WebCam : MonoBehaviour
@@ -48,9 +50,6 @@ public class WebCam : MonoBehaviour
             backgroundArray[i] = displayArray[i].GetComponentInChildren(typeof(RawImage)) as RawImage;
             aspectRatioArray[i] = displayArray[i].GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
             dropdownArray[i] = displayArray[i].GetComponentInChildren(typeof(Dropdown)) as Dropdown;
-
-            Debug.Log(aspectRatioArray[i]);
-            Debug.Log(dropdownArray[i]);
         }
 
         // Find Webcams
@@ -138,49 +137,3 @@ public class WebCam : MonoBehaviour
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Initialize all devices
-//int currDisplayIdx = 0;
-//for (int i = 0; i < devices.Length; i++)
-//{
-//    // Make sure it's not a leapmotion camera
-//    if (devices[i].name != "Leap Dev Kit")
-
-//    // Make sure it's a Blackmagic camera
-//    //if (devices[i].name.Contains("Black"))
-//    {
-//        Debug.Log(i);
-//        Debug.Log(devices[i].name);
-
-//        // Initialize camera
-//        camArray[currDisplayIdx] = new WebCamTexture(devices[i].name, Screen.width, Screen.height);
-
-//        // Play camera if not already playing
-//        if (!camArray[currDisplayIdx].isPlaying)
-//            camArray[currDisplayIdx].Play();
-
-//        // Display camera feed
-//        backgroundArray[currDisplayIdx].texture = camArray[currDisplayIdx];
-
-//        currDisplayIdx++;
-//        numCameras++;
-//    }
-//}
