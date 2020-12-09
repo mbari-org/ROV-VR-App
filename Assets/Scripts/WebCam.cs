@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 // TODO: Disable unused displays
 // TODO: Release camera when deselected
-// TODO: Allow for duplicates (check before playing)
 // TODO: Figure out if aspect ratio fitter is necessary
-// TODO: create list of "webcam textures" - one for each camera (and check to make sure they don't break things)
+// TODO: integrate skybox camera
+// TODO: enable hotplugging
+// Note: all webcams need to be plugged in in advance
 
 public class WebCam : MonoBehaviour
 {
@@ -15,10 +16,10 @@ public class WebCam : MonoBehaviour
 
     private bool camAvailable;
     private int numCameras = 0;
-
-    private WebCamTexture[] camArray = new WebCamTexture[maxCameras];
+    private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
+    public Material skyBoxMaterial;
     public GameObject display1;
     public GameObject display2;
     public GameObject display3;
@@ -60,14 +61,24 @@ public class WebCam : MonoBehaviour
             return;
         }
 
-        // Update list of device names
+        // Update list of devices
         cameraNameList.Add("[Select Camera]");
         for (int i = 0; i < devices.Length; i++)
+        {
+            // Save camera name
             cameraNameList.Add((string)devices[i].name);
-         
+
+            // Create texture for each camera
+            camList.Add(new WebCamTexture(devices[i].name, Screen.width, Screen.height));
+
+            // Play camera if not already playing
+            if (!camList[i].isPlaying)
+                camList[i].Play();
+        }
+
         // Update dropdown options
         for (int i = 0; i < maxCameras; i++)
-        {   
+        {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
         }
@@ -78,34 +89,7 @@ public class WebCam : MonoBehaviour
         dropdownArray[3].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[3], (int)3, devices); });
         dropdownArray[4].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[4], (int)4, devices); });
 
-        // Initialize all devices
-        //int currDisplayIdx = 0;
-        //for (int i = 0; i < devices.Length; i++)
-        //{
-        //    // Make sure it's not a leapmotion camera
-        //    if (devices[i].name != "Leap Dev Kit")
-
-        //    // Make sure it's a Blackmagic camera
-        //    //if (devices[i].name.Contains("Black"))
-        //    {
-        //        Debug.Log(i);
-        //        Debug.Log(devices[i].name);
-
-        //        // Initialize camera
-        //        camArray[currDisplayIdx] = new WebCamTexture(devices[i].name, Screen.width, Screen.height);
-
-        //        // Play camera if not already playing
-        //        if (!camArray[currDisplayIdx].isPlaying)
-        //            camArray[currDisplayIdx].Play();
-
-        //        // Display camera feed
-        //        backgroundArray[currDisplayIdx].texture = camArray[currDisplayIdx];
-
-        //        currDisplayIdx++;
-        //        numCameras++;
-        //    }
-        //}
-        //camAvailable = true;
+        camAvailable = true;
     }
 
     //Ouput the new value of the Dropdown into Text
@@ -115,37 +99,74 @@ public class WebCam : MonoBehaviour
         if (dropdown.value != 0)
         {
             int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
-            
-            Debug.Log("Initializing : " + dropdown.value);
-            // Initialize camera
-            camArray[displayIdx] = new WebCamTexture(devices[cameraIdx].name, Screen.width, Screen.height);
-
-            // Play camera if not already playing
-            if (!camArray[displayIdx].isPlaying)
-                camArray[displayIdx].Play();
 
             // Display camera feed
-            backgroundArray[displayIdx].texture = camArray[displayIdx];
-
+            backgroundArray[displayIdx].texture = camList[cameraIdx];
         }
     }
     void Update()
     {
-        //if (!camAvailable)
-        //    return;
+        if (!camAvailable)
+            return;
 
         for (int i = 0; i < numCameras; i++)
         {
             // Only update initialized cameras
-            if (camArray[i] != null)
+            if (camList[i] != null)
             {
-                float ratio = (float)camArray[i].width / (float)camArray[i].height;
+                float ratio = (float)camList[i].width / (float)camList[i].height;
                 aspectRatioArray[i].aspectRatio = ratio;
-                float scaleY = camArray[i].videoVerticallyMirrored ? -1f : 1f;
+                float scaleY = camList[i].videoVerticallyMirrored ? -1f : 1f;
                 backgroundArray[i].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
-                int orient = -camArray[i].videoRotationAngle;
+                int orient = -camList[i].videoRotationAngle;
                 backgroundArray[i].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialize all devices
+//int currDisplayIdx = 0;
+//for (int i = 0; i < devices.Length; i++)
+//{
+//    // Make sure it's not a leapmotion camera
+//    if (devices[i].name != "Leap Dev Kit")
+
+//    // Make sure it's a Blackmagic camera
+//    //if (devices[i].name.Contains("Black"))
+//    {
+//        Debug.Log(i);
+//        Debug.Log(devices[i].name);
+
+//        // Initialize camera
+//        camArray[currDisplayIdx] = new WebCamTexture(devices[i].name, Screen.width, Screen.height);
+
+//        // Play camera if not already playing
+//        if (!camArray[currDisplayIdx].isPlaying)
+//            camArray[currDisplayIdx].Play();
+
+//        // Display camera feed
+//        backgroundArray[currDisplayIdx].texture = camArray[currDisplayIdx];
+
+//        currDisplayIdx++;
+//        numCameras++;
+//    }
+//}
