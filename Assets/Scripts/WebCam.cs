@@ -19,6 +19,7 @@ public class WebCam : MonoBehaviour
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
+    public Dropdown skyBoxDropdown;
     public Material skyBoxMaterial;
     public GameObject display1;
     public GameObject display2;
@@ -77,31 +78,44 @@ public class WebCam : MonoBehaviour
         }
 
         // Update dropdown options
+        skyBoxDropdown.ClearOptions();
+        skyBoxDropdown.AddOptions(cameraNameList);
         for (int i = 0; i < maxCameras; i++)
         {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
         }
         // TODO: Insert this in the above loop without things breaking
-        dropdownArray[0].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[0], (int)0, devices); });
-        dropdownArray[1].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[1], (int)1, devices); });
-        dropdownArray[2].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[2], (int)2, devices); });
-        dropdownArray[3].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[3], (int)3, devices); });
-        dropdownArray[4].onValueChanged.AddListener(delegate { InitializeCamera(dropdownArray[4], (int)4, devices); });
+        skyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(skyBoxDropdown, (int)-1, devices); });
+        dropdownArray[0].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[0], (int)0, devices); });
+        dropdownArray[1].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[1], (int)1, devices); });
+        dropdownArray[2].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[2], (int)2, devices); });
+        dropdownArray[3].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[3], (int)3, devices); });
+        dropdownArray[4].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[4], (int)4, devices); });
 
         camAvailable = true;
     }
 
-    //Ouput the new value of the Dropdown into Text
-    void InitializeCamera(Dropdown dropdown, int displayIdx, WebCamDevice[] devices)
+    void DisplayCamera(Dropdown dropdown, int displayIdx, WebCamDevice[] devices)
     {
-        // Ignore [Select Camera] option
-        if (dropdown.value != 0)
+        // Reset display if [Select Camera] is chosen
+        if (dropdown.value == 0)
+        {
+            if (displayIdx == -1) // Skybox camera feed
+                skyBoxMaterial.mainTexture = null;
+            else // Non-skybox camera feed
+                backgroundArray[displayIdx].texture = null;
+        } 
+        
+        // Update camera display if a camera is chosen
+        else
         {
             int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
 
-            // Display camera feed
-            backgroundArray[displayIdx].texture = camList[cameraIdx];
+            if (displayIdx == -1) // Skybox camera feed
+                skyBoxMaterial.mainTexture = camList[cameraIdx];
+            else // Non-skybox camera feed
+                backgroundArray[displayIdx].texture = camList[cameraIdx];
         }
     }
     void Update()
