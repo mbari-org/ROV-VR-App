@@ -5,40 +5,62 @@ using System.Collections.Generic;
 
 public class WebCam : MonoBehaviour
 {
+    public static int maxCameras = 5;
+
     private bool camAvailable;
-    private WebCamTexture cam1;
+    private int numCameras = 0;
+
+    private WebCamTexture[] camArray = new WebCamTexture[maxCameras];
+
+    // Will be used to overlay raw image on top of default background
     private Texture defaultBackground1;
-    public RawImage background1;
-    public AspectRatioFitter fit1;
-    private int camIndex = 0;
-    private int magicCam = 0;//-1
-    //cameras 2-5
-    private WebCamTexture cam2;
-    private WebCamTexture cam3;
-    private WebCamTexture cam4;
-    private WebCamTexture cam5;
     private Texture defaultBackground2;
     private Texture defaultBackground3;
     private Texture defaultBackground4;
     private Texture defaultBackground5;
+    private Texture[] defaultBackgroundArray = new Texture[maxCameras];
+
+    // Gameobjects that need to be set in inspector menu
+    public RawImage background1;
     public RawImage background2;
     public RawImage background3;
     public RawImage background4;
     public RawImage background5;
+    private RawImage[] backgroundArray = new RawImage[maxCameras];
+
+    public AspectRatioFitter fit1;
     public AspectRatioFitter fit2;
     public AspectRatioFitter fit3;
     public AspectRatioFitter fit4;
     public AspectRatioFitter fit5;
+    private AspectRatioFitter[] aspectRatioArray = new AspectRatioFitter[maxCameras];
 
     void Start()
     {
-        defaultBackground1 = background1.texture;
-        //cameras 2-5
-        defaultBackground2 = background2.texture;
-        defaultBackground3 = background3.texture;
-        defaultBackground4 = background4.texture;
-        defaultBackground5 = background5.texture;
+        // TODO: Put this in a loop
+        defaultBackgroundArray[0] = defaultBackground1;
+        defaultBackgroundArray[1] = defaultBackground2;
+        defaultBackgroundArray[2] = defaultBackground3;
+        defaultBackgroundArray[3] = defaultBackground4;
+        defaultBackgroundArray[4] = defaultBackground5;
 
+        backgroundArray[0] = background1;
+        backgroundArray[1] = background2;
+        backgroundArray[2] = background3;
+        backgroundArray[3] = background4;
+        backgroundArray[4] = background5;
+
+        aspectRatioArray[0] = fit1;
+        aspectRatioArray[1] = fit2;
+        aspectRatioArray[2] = fit3;
+        aspectRatioArray[3] = fit4;
+        aspectRatioArray[4] = fit5;
+
+        // Set background as our image texture
+        for (int i = 0; i < maxCameras; i++)
+            defaultBackgroundArray[i] = backgroundArray[i].texture;
+
+        // Find Webcams
         WebCamDevice[] devices = WebCamTexture.devices;
         if (devices.Length == 0)
         {
@@ -47,171 +69,48 @@ public class WebCam : MonoBehaviour
             return;
         }
 
+        // Initialize all devices
+        int currDisplayIdx = 0;
         for (int i = 0; i < devices.Length; i++)
         {
-            /*if (devices[i].name != "Leap Dev Kit")
-            {
-                camIndex = i;
-                if (magicCam == -1)
-                {
-                    magicCam = 0;
-                }
-            }*/
-            /*if (devices[i].name.Contains("Black"))
-            {
-                camIndex = i;
-            if (magicCam == -1)
-                {
-                    magicCam = 0;
-                }
-            }*/
-            if (devices[i].name.Contains("Epoc")) //Caps don't matter
-            {
-                camIndex = i;
-                if (magicCam == -1)
-                {
-                    magicCam = 0;
-                }
-            }
+            // Make sure it's not a leapmotion camera
+            //if (devices[i].name != "Leap Dev Kit")
 
-            Debug.Log(devices[i].name);
-            Debug.Log(i);
+            // Make sure it's a Blackmagic camera
+            if (devices[i].name.Contains("Black"))
+            {
+                Debug.Log(i);
+                Debug.Log(devices[i].name);
 
-            if (magicCam == 0)
-            {
-                if (cam1 == null)
-                {
-                    cam1 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
-                    magicCam = 1;
-                }
-                if (!cam1.isPlaying)
-                {
-                    cam1.Play();
-                    Debug.Log(cam1.isPlaying);
-                }
-                background1.texture = cam1;
-            }
-            if (magicCam == 1)
-            {
-                if (cam2 == null)
-                {
-                    cam2 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
-                    magicCam = 2;
-                }
-                if (!cam2.isPlaying)
-                {
-                    cam2.Play();
-                    Debug.Log(cam1.isPlaying);
-                }
-                background2.texture = cam2;
-            }
-            if (magicCam == 2)
-            {
-                if (cam3 == null)
-                {
-                    cam3 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
-                    magicCam = 3;
-                }
-                if (!cam3.isPlaying)
-                {
-                    cam3.Play();
-                    Debug.Log(cam1.isPlaying);
-                }
-                background3.texture = cam3;
-            }
-            if (magicCam == 3)
-            {
-                if (cam4 == null)
-                {
-                    cam4 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
-                    magicCam = 4;
-                }
-                if (!cam4.isPlaying)
-                {
-                    cam4.Play();
-                    Debug.Log(cam1.isPlaying);
-                }
-                background4.texture = cam4;
-            }
-            if (magicCam == 4)
-            {
-                if (cam5 == null)
-                {
-                    cam5 = new WebCamTexture(devices[camIndex].name, Screen.width, Screen.height);
-                    magicCam = 5;
-                }
-                if (!cam5.isPlaying)
-                {
-                    cam5.Play();
-                    Debug.Log(cam1.isPlaying);
-                }
-                background5.texture = cam5;
+                // Initialize camera
+                camArray[currDisplayIdx] = new WebCamTexture(devices[i].name, Screen.width, Screen.height);
+
+                // Play camera if not already playing
+                if (!camArray[currDisplayIdx].isPlaying)
+                    camArray[currDisplayIdx].Play();
+
+                // Display camera feed
+                backgroundArray[currDisplayIdx].texture = camArray[currDisplayIdx];
+
+                currDisplayIdx++;
+                numCameras++;
             }
         }
-
-       /* if (!cam1.isPlaying)
-        {
-            cam1.Play();
-            Debug.Log(cam1.isPlaying);
-        }
-
-        background1.texture = cam1;*/
-
         camAvailable = true;
-
     }
     void Update()
     {
         if (!camAvailable)
             return;
 
-        //All cameras same size?
-        if (magicCam >= 0)
+        for (int i = 0; i< numCameras; i++)
         {
-            float ratio1 = (float)cam1.width / (float)cam1.height;
-            fit1.aspectRatio = ratio1;
-            float scaleY1 = cam1.videoVerticallyMirrored ? -1f : 1f;
-            background1.rectTransform.localScale = new Vector3(1f, scaleY1, 1f);
-            int orient1 = -cam1.videoRotationAngle;
-            background1.rectTransform.localEulerAngles = new Vector3(0, 0, orient1);
-        }
-
-        //cameras 2-5
-        if (magicCam >= 1)
-        {
-            float ratio2 = (float)cam2.width / (float)cam2.height;
-            fit2.aspectRatio = ratio2;
-            float scaleY2 = cam2.videoVerticallyMirrored ? -1f : 1f;
-            background2.rectTransform.localScale = new Vector3(1f, scaleY2, 1f);
-            int orient2 = -cam2.videoRotationAngle;
-            background2.rectTransform.localEulerAngles = new Vector3(0, 0, orient2);
-        }
-        if (magicCam >= 2)
-        {
-            float ratio3 = (float)cam3.width / (float)cam3.height;
-            fit3.aspectRatio = ratio3;
-            float scaleY3 = cam3.videoVerticallyMirrored ? -1f : 1f;
-            background3.rectTransform.localScale = new Vector3(1f, scaleY3, 1f);
-            int orient3 = -cam3.videoRotationAngle;
-            background3.rectTransform.localEulerAngles = new Vector3(0, 0, orient3);
-        }
-        if (magicCam >= 3)
-        {
-            float ratio4 = (float)cam4.width / (float)cam4.height;
-            fit4.aspectRatio = ratio4;
-            float scaleY4 = cam4.videoVerticallyMirrored ? -1f : 1f;
-            background4.rectTransform.localScale = new Vector3(1f, scaleY4, 1f);
-            int orient4 = -cam4.videoRotationAngle;
-            background4.rectTransform.localEulerAngles = new Vector3(0, 0, orient4);
-        }
-        if (magicCam >= 4)
-        {
-            float ratio5 = (float)cam5.width / (float)cam5.height;
-            fit5.aspectRatio = ratio5;
-            float scaleY5 = cam5.videoVerticallyMirrored ? -1f : 1f;
-            background5.rectTransform.localScale = new Vector3(1f, scaleY5, 1f);
-            int orient5 = -cam5.videoRotationAngle;
-            background5.rectTransform.localEulerAngles = new Vector3(0, 0, orient5);
+            float ratio = (float)camArray[i].width / (float)camArray[i].height;
+            fit1.aspectRatio = ratio;
+            float scaleY = camArray[i].videoVerticallyMirrored ? -1f : 1f;
+            backgroundArray[i].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
+            int orient = -camArray[i].videoRotationAngle;
+            backgroundArray[i].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
         }
     }
 }
