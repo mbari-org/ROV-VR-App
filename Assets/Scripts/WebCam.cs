@@ -2,11 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq; // For checking if items exist in array
 
 // TODO: Disable unused displays
-// TODO: Release unused cameras (having them all run might affect runtime?)
 // TODO: Figure out if aspect ratio fitter is necessary
 // TODO: enable hotplugging
+// TODO: Create a button that makes new displays
 
 // Note: Some cameras will throw a "could not start graph" and "could not pause pControl" error - 
 // these will just not be displayed, but this could be handled more elegantly
@@ -14,10 +15,10 @@ using System.Collections.Generic;
 
 public class WebCam : MonoBehaviour
 {
-    public static int maxCameras = 5;
+    public static int numDisplays = 5;
 
     private bool camAvailable;
-    private int numCameras = 0;
+    // List of webcam textures
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
@@ -29,27 +30,38 @@ public class WebCam : MonoBehaviour
     public GameObject display4;
     public GameObject display5;
 
-    private GameObject[] displayArray = new GameObject[maxCameras];
-    private RawImage[] backgroundArray = new RawImage[maxCameras];
-    private AspectRatioFitter[] aspectRatioArray = new AspectRatioFitter[maxCameras];
-    private Dropdown[] dropdownArray = new Dropdown[maxCameras];
+    // List of display gameobjects and their components
+    private GameObject[] displayArray = new GameObject[numDisplays]; 
+    private RawImage[] backgroundArray = new RawImage[numDisplays]; 
+    private AspectRatioFitter[] aspectRatioArray = new AspectRatioFitter[numDisplays];
+    private Dropdown[] dropdownArray = new Dropdown[numDisplays];
+
+    // List containing what camera index is displayed on each display
+    // -1 if display is inactive
+    private int[] displayCameraIdxs = new int[numDisplays];
+    private int skyboxCameraIdx = -1; // Initialize skybox camera idx value
 
     // For dropdown menu
     List<string> cameraNameList = new List<string>();
+    
 
     void Start()
     {
+        // Save displays
         displayArray[0] = display1;
         displayArray[1] = display2;
         displayArray[2] = display3;
         displayArray[3] = display4;
         displayArray[4] = display5;
 
-        for (int i = 0; i < maxCameras; i++)
+        for (int i = 0; i < numDisplays; i++)
         {
             backgroundArray[i] = displayArray[i].GetComponentInChildren(typeof(RawImage)) as RawImage;
             aspectRatioArray[i] = displayArray[i].GetComponentInChildren(typeof(AspectRatioFitter)) as AspectRatioFitter;
             dropdownArray[i] = displayArray[i].GetComponentInChildren(typeof(Dropdown)) as Dropdown;
+
+            // Initialize all displays to inactive state 
+            displayCameraIdxs[i] = -1;
         }
 
         // Find Webcams
@@ -70,16 +82,12 @@ public class WebCam : MonoBehaviour
 
             // Create texture for each camera
             camList.Add(new WebCamTexture(devices[i].name, Screen.width, Screen.height));
-
-            // Play camera if not already playing
-            if (!camList[i].isPlaying)
-                camList[i].Play();
         }
 
         // Update dropdown options
         skyBoxDropdown.ClearOptions();
         skyBoxDropdown.AddOptions(cameraNameList);
-        for (int i = 0; i < maxCameras; i++)
+        for (int i = 0; i < numDisplays; i++)
         {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
@@ -100,40 +108,88 @@ public class WebCam : MonoBehaviour
         // Reset display if [Select Camera] is chosen
         if (dropdown.value == 0)
         {
+            int prevCamIdx;
+
             if (displayIdx == -1) // Skybox camera feed
+            {
                 skyBoxMaterial.mainTexture = null;
+                prevCamIdx = skyboxCameraIdx;
+                skyboxCameraIdx = -1;
+            }
             else // Non-skybox camera feed
+            {
                 backgroundArray[displayIdx].texture = null;
-        } 
-        
+                prevCamIdx = displayCameraIdxs[displayIdx];
+                displayCameraIdxs[displayIdx] = -1;
+            }
+            // Turn off camera if no other displays are using it
+            if (prevCamIdx != -1) // Only run the check for valid cameras
+            {
+                // Check if the camera index is not being used by either the skybox or the other displays
+                if (skyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+                {
+                    if (camList[prevCamIdx].isPlaying)
+                    {
+                        camList[prevCamIdx].Stop();
+                    }
+                        
+                }
+            }
+        }
+
         // Update camera display if a camera is chosen
         else
         {
             int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
 
             if (displayIdx == -1) // Skybox camera feed
+            {
                 skyBoxMaterial.mainTexture = camList[cameraIdx];
+                skyboxCameraIdx = cameraIdx;
+            }
             else // Non-skybox camera feed
+            {
                 backgroundArray[displayIdx].texture = camList[cameraIdx];
+                displayCameraIdxs[displayIdx] = cameraIdx;
+            }
+
+            // Play camera if not already playing
+            if (!camList[cameraIdx].isPlaying)
+            {
+                camList[cameraIdx].Play();
+            }
         }
     }
+
+    void UpdateCameraTexture(int cameraIdx)
+    {
+        // Make sure camera is initialized
+        if (camList[cameraIdx] != null)
+        {
+            float ratio = (float)camList[cameraIdx].width / (float)camList[cameraIdx].height;
+            aspectRatioArray[cameraIdx].aspectRatio = ratio;
+            float scaleY = camList[cameraIdx].videoVerticallyMirrored ? -1f : 1f;
+            backgroundArray[cameraIdx].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
+            int orient = -camList[cameraIdx].videoRotationAngle;
+            backgroundArray[cameraIdx].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
+        }
+    }
+
     void Update()
     {
         if (!camAvailable)
             return;
 
-        for (int i = 0; i < numCameras; i++)
+        // Only update textures currently in use
+        foreach (int camIdx in displayCameraIdxs.Distinct())
         {
-            // Only update initialized cameras
-            if (camList[i] != null)
-            {
-                float ratio = (float)camList[i].width / (float)camList[i].height;
-                aspectRatioArray[i].aspectRatio = ratio;
-                float scaleY = camList[i].videoVerticallyMirrored ? -1f : 1f;
-                backgroundArray[i].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
-                int orient = -camList[i].videoRotationAngle;
-                backgroundArray[i].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
-            }
+            // Ignore -1 indexed camera (placeholder for unused displays)
+            if (camIdx != -1)
+                UpdateCameraTexture(camIdx);
         }
+
+        // Update texture for skybox if needed
+        if (skyboxCameraIdx != -1 && !displayCameraIdxs.Contains(skyboxCameraIdx))
+            UpdateCameraTexture(skyboxCameraIdx);
     }
 }
