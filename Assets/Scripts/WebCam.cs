@@ -22,8 +22,10 @@ public class WebCam : MonoBehaviour
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
-    public Dropdown skyBoxDropdown;
-    public Material skyBoxMaterial;
+    public Dropdown skyBoxDropdownLeft;
+    public Dropdown skyBoxDropdownRight;
+    public Texture skyBoxTextureLeft;
+    public Texture skyBoxTextureRight;
     public GameObject display1;
     public GameObject display2;
     public GameObject display3;
@@ -39,7 +41,8 @@ public class WebCam : MonoBehaviour
     // List containing what camera index is displayed on each display
     // -1 if display is inactive
     private int[] displayCameraIdxs = new int[numDisplays];
-    private int skyboxCameraIdx = -1; // Initialize skybox camera idx value
+    private int skyboxCameraIdxLeft = -1; // Initialize skybox camera idx value
+    private int skyboxCameraIdxRight = -1; // Initialize skybox camera idx value
 
     // For dropdown menu
     List<string> cameraNameList = new List<string>();
@@ -85,15 +88,18 @@ public class WebCam : MonoBehaviour
         }
 
         // Update dropdown options
-        skyBoxDropdown.ClearOptions();
-        skyBoxDropdown.AddOptions(cameraNameList);
+        skyBoxDropdownLeft.ClearOptions();
+        skyBoxDropdownRight.ClearOptions();
+        skyBoxDropdownLeft.AddOptions(cameraNameList);
+        skyBoxDropdownRight.AddOptions(cameraNameList); 
         for (int i = 0; i < numDisplays; i++)
         {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
         }
         // TODO: Insert this in the above loop without things breaking
-        skyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(skyBoxDropdown, (int)-1, devices); });
+        skyBoxDropdownLeft.onValueChanged.AddListener(delegate { DisplayCamera(skyBoxDropdownLeft, (int)-2, devices); });
+        skyBoxDropdownRight.onValueChanged.AddListener(delegate { DisplayCamera(skyBoxDropdownRight, (int)-1, devices); });
         dropdownArray[0].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[0], (int)0, devices); });
         dropdownArray[1].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[1], (int)1, devices); });
         dropdownArray[2].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[2], (int)2, devices); });
@@ -110,11 +116,17 @@ public class WebCam : MonoBehaviour
         {
             int prevCamIdx;
 
-            if (displayIdx == -1) // Skybox camera feed
+            if (displayIdx == -2) // Left Skybox camera feed
             {
-                skyBoxMaterial.mainTexture = null;
-                prevCamIdx = skyboxCameraIdx;
-                skyboxCameraIdx = -1;
+                skyBoxTextureLeft = null;
+                prevCamIdx = skyboxCameraIdxLeft;
+                skyboxCameraIdxLeft = -1;
+            }
+            else if (displayIdx == -1) // Right Skybox camera feed
+            {
+                skyBoxTextureRight = null;
+                prevCamIdx = skyboxCameraIdxRight;
+                skyboxCameraIdxRight = -1;
             }
             else // Non-skybox camera feed
             {
@@ -126,7 +138,7 @@ public class WebCam : MonoBehaviour
             if (prevCamIdx != -1) // Only run the check for valid cameras
             {
                 // Check if the camera index is not being used by either the skybox or the other displays
-                if (skyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+                if (skyboxCameraIdxLeft != prevCamIdx &&  skyboxCameraIdxRight != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
                 {
                     if (camList[prevCamIdx].isPlaying)
                     {
@@ -142,10 +154,24 @@ public class WebCam : MonoBehaviour
         {
             int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
 
-            if (displayIdx == -1) // Skybox camera feed
+            if (displayIdx == -2) // Left Skybox camera feed
             {
-                skyBoxMaterial.mainTexture = camList[cameraIdx];
-                skyboxCameraIdx = cameraIdx;
+                Debug.Log("Setting Left Texture");
+                skyBoxTextureLeft = camList[cameraIdx];
+                skyboxCameraIdxLeft = cameraIdx;
+                Debug.Log(cameraIdx + "|" + camList[cameraIdx].name);
+                // ELEPHANT: We left off here. It's something with the camList
+                // When we access the camList with the index (which does work) the camera at that index seems to be nul
+                // TODO: Check that camlist is being saved properly
+                // TODO: Trying to get two cameras to display in Unity stereo skybox for left and right eye separately
+                // OBS still needs to be figured out (if we want to use it)
+            }
+            else if (displayIdx == -1) //Right Skybox camera feed
+            {
+                Debug.Log("Setting Right Texture");
+                skyBoxTextureRight = camList[cameraIdx];
+                skyboxCameraIdxRight = cameraIdx;
+                Debug.Log(cameraIdx + "|" + camList[cameraIdx].name);
             }
             else // Non-skybox camera feed
             {
@@ -189,7 +215,10 @@ public class WebCam : MonoBehaviour
         }
 
         // Update texture for skybox if needed
-        if (skyboxCameraIdx != -1 && !displayCameraIdxs.Contains(skyboxCameraIdx))
-            UpdateCameraTexture(skyboxCameraIdx);
+        if (skyboxCameraIdxRight != -1 && !displayCameraIdxs.Contains(skyboxCameraIdxRight))
+            UpdateCameraTexture(skyboxCameraIdxRight);
+
+        if (skyboxCameraIdxLeft != -1 && !displayCameraIdxs.Contains(skyboxCameraIdxLeft))
+            UpdateCameraTexture(skyboxCameraIdxLeft);
     }
 }
