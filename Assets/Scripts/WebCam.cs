@@ -12,12 +12,18 @@ using System.Linq; // For checking if items exist in array
 // Note: Some cameras will throw a "could not start graph" and "could not pause pControl" error - 
 // these will just not be displayed, but this could be handled more elegantly
 // Note: all webcams need to be plugged in in advance
+// Note: Getting the height/width of the webcam feed to compute the aspect ratio is known to take a few frames to work. This script assumes no camera will have an actual width less than 100, so it waits until the width is greater than 100 before setting the ratios. Lists are used to keep track of which displays need to be updated, which prevents the aspect ratio from being set every loop
 
 public class WebCam : MonoBehaviour
 {
     public static int numDisplays = 5;
 
     private bool camAvailable;
+
+    // Lists used to update aspect ratios
+    private List<int> waitingCamList = new List<int>();
+    private List<int> waitingDisplayList = new List<int>();
+
     // List of webcam textures
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
@@ -151,6 +157,9 @@ public class WebCam : MonoBehaviour
             {
                 backgroundArray[displayIdx].texture = camList[cameraIdx];
                 displayCameraIdxs[displayIdx] = cameraIdx;
+
+                waitingCamList.Add(cameraIdx);
+                waitingDisplayList.Add(displayIdx);
             }
 
             // Play camera if not already playing
@@ -161,18 +170,29 @@ public class WebCam : MonoBehaviour
         }
     }
 
-    void UpdateCameraTexture(int cameraIdx)
+    bool AdjustDisplayRatio(int displayIdx, int cameraIdx)
     {
-        // Make sure camera is initialized
-        if (camList[cameraIdx] != null)
+        // Ensures display has correct aspect ratio and scaling
+        // returns true if successful, false if not
+
+        float width = camList[cameraIdx].width;
+        float height = camList[cameraIdx].height;
+
+        if (width > 100)
         {
-            float ratio = (float)camList[cameraIdx].width / (float)camList[cameraIdx].height;
-            aspectRatioArray[cameraIdx].aspectRatio = ratio;
-            float scaleY = camList[cameraIdx].videoVerticallyMirrored ? -1f : 1f;
-            backgroundArray[cameraIdx].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
-            int orient = -camList[cameraIdx].videoRotationAngle;
-            backgroundArray[cameraIdx].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
+            float ratio = width / height;
+            aspectRatioArray[displayIdx].aspectRatio = ratio;
+            return true;
         }
+        else
+        {
+            // Invalid Ratio
+            return false;
+        }
+        //float scaleY = camList[cameraIdx].videoVerticallyMirrored ? -1f : 1f;
+        //backgroundArray[displayIdx].rectTransform.localScale = new Vector3(1f, scaleY, 1f);
+        //int orient = -camList[cameraIdx].videoRotationAngle;
+        //backgroundArray[displayIdx].rectTransform.localEulerAngles = new Vector3(0, 0, orient);
     }
 
     void Update()
@@ -180,16 +200,22 @@ public class WebCam : MonoBehaviour
         if (!camAvailable)
             return;
 
-        // Only update textures currently in use
-        foreach (int camIdx in displayCameraIdxs.Distinct())
+        // Update aspect ratios for un-set displays
+        if (waitingCamList.Count != 0)
         {
-            // Ignore -1 indexed camera (placeholder for unused displays)
-            if (camIdx != -1)
-                UpdateCameraTexture(camIdx);
-        }
+            // Iterate backwards to ensure removal doesn't break indexing
+            for (int i = waitingCamList.Count-1; i >= 0; i--)
+            {
+                int displayIdx = waitingDisplayList[i];
+                int cameraIdx = waitingCamList[i];
 
-        // Update texture for skybox if needed
-        if (skyboxCameraIdx != -1 && !displayCameraIdxs.Contains(skyboxCameraIdx))
-            UpdateCameraTexture(skyboxCameraIdx);
+                bool success = AdjustDisplayRatio(displayIdx, cameraIdx);
+                if (success)
+                {
+                    waitingDisplayList.RemoveAt(i);
+                    waitingCamList.RemoveAt(i);
+                }
+            }
+        }
     }
 }
