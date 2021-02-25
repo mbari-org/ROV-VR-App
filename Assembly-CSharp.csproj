@@ -105,6 +105,7 @@
     <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPInputFieldCaret.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPSubmesh.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
+    <Compile Include="Assets\PopupSettings.cs" />
     <Compile Include="Assets\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
     <Compile Include="Assets\Scripts\ButtonTransitioner.cs" />

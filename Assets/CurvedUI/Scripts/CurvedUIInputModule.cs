@@ -696,7 +696,8 @@ public class CurvedUIInputModule : StandaloneInputModule {
     {
         if(m_steamVRClickAction != null)
         {
-            CustomControllerButtonState = m_steamVRClickAction.GetState(SteamVRInputSource);
+            // Allow mouse click to be used as VR click substitute
+            CustomControllerButtonState = m_steamVRClickAction.GetState(SteamVRInputSource) || Input.GetMouseButtonDown(0);
             CustomControllerRay = new Ray(ControllerTransform.transform.position, ControllerTransform.transform.forward);
 
             ProcessCustomRayController();
