@@ -12,11 +12,11 @@ public class OverlayConfig
     public string overlayName;
     public bool isVisible;
     public Transform tf;
-    
+
     public void recordOverlayConfig(GameObject overlay)
     {
         overlayName = overlay.name;
-        isVisible = overlay.activeSelf;
+        isVisible = overlay.activeInHierarchy;
         tf = overlay.transform;
     }
 }
@@ -24,7 +24,7 @@ public class OverlayConfig
 [System.Serializable]
 public class User
 {
-    public List<OverlayConfig> overlaySettings;
+    public List<OverlayConfig> overlaySettings = new List<OverlayConfig> { };
     public string userName;
 
     public User(string name)
@@ -32,7 +32,7 @@ public class User
         userName = name;
     }
 
-    void RecordOverlaySettings(List<GameObject> overlays)
+    public void RecordOverlaySettings(List<GameObject> overlays)
     {
         foreach(GameObject overlay in overlays)
         {
@@ -95,6 +95,8 @@ public class PopupSettings : MonoBehaviour
     public Dropdown ChooseUserDropdown;
     public InputField NewUserInputField;
     public Button AddUserButton;
+    public Button LoadUserSettingsButton;
+    public Button WriteUserSettingsButton;
 
     [Header("LCM")]
     public InputField LCMInputField;
@@ -106,10 +108,17 @@ public class PopupSettings : MonoBehaviour
     public Material skyboxMaterial;
 
     [Header("Overlays")]
+    public GameObject mainOverlayCanvas;
     // TODO: Include all the overlays here so we can save their xy coords
+
+    // TODO: load in individaul gui gameobjects
+    // TODO: create a list of gui gameobjects
+    // TODO: modify WriteUserSettingsCallback to take in this list 
+    // TODO: WE LEFT OFF HERE
 
     RovVrSettings settings = new RovVrSettings();
 
+    int currUserIdx = -1;
     bool prevEscBool = false;
     bool currEscBool = false;
 
@@ -123,6 +132,10 @@ public class PopupSettings : MonoBehaviour
         ConfirmGlobalSettingsButton.onClick.AddListener(ConfirmGlobalSettingsCallback);
         AddUserButton.onClick.AddListener(AddUserCallback);
         SaveAllButton.onClick.AddListener(SaveAllCallback);
+        WriteUserSettingsButton.onClick.AddListener(WriteUserSettingsCallback);
+
+        ChooseUserDropdown.onValueChanged.AddListener(delegate 
+            { ChooseUserCallback(ChooseUserDropdown); });
     }
 
 
@@ -188,6 +201,7 @@ public class PopupSettings : MonoBehaviour
         ChooseUserDropdown.AddOptions(new List<string> { newUser.userName });
         int userIdx = ChooseUserDropdown.options.FindIndex(ChooseUserDropdown => ChooseUserDropdown.text == newUser.userName);
         ChooseUserDropdown.value = userIdx;
+        currUserIdx = userIdx;
 
         // Clear text when done
         NewUserInputField.text = "";
@@ -197,5 +211,35 @@ public class PopupSettings : MonoBehaviour
     {
         print("Attempting to save data");
         SaveData dataSaver = new SaveData(settings);
+    }
+
+    void WriteUserSettingsCallback()
+    {
+        if (currUserIdx == -1)
+        {
+            Debug.LogWarning("No user selected. Overlay settings will not be saved");
+            return;
+        }
+
+        // Get all overlay gameobjects from mainOverlayCanvas
+        Transform[] allChildren = mainOverlayCanvas.GetComponentsInChildren<Transform>(includeInactive: true);
+        List<GameObject> overlayList = new List<GameObject> { };
+
+        foreach (Transform child in allChildren)
+        {
+            if (child.parent == mainOverlayCanvas.transform)
+            {
+                GameObject overlay = child.gameObject;
+                overlayList.Add(overlay);
+            }
+        }
+
+        settings.users[currUserIdx].RecordOverlaySettings(overlayList);
+    }
+
+    void ChooseUserCallback(Dropdown ChooseUserDropdown)
+    {
+        int i = ChooseUserDropdown.value;
+        currUserIdx = i;
     }
 }

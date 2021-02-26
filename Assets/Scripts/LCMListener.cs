@@ -163,7 +163,7 @@ public class LCMListener : MonoBehaviour
         }
         catch (Exception)
         {
-            print("Invalid or Unset LCM URL - reverting to default");
+            UnityEngine.Debug.LogWarning("Invalid or Unset LCM URL - reverting to default");
             myLCM = new LCM.LCM.LCM("udpm://239.255.76.67:7667");
         }
 
