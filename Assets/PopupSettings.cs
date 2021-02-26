@@ -6,12 +6,54 @@ using UnityEngine.UI;
 using UnityEditor;
 using Unity.XR.OpenVR.SimpleJSON;
 
+public class OverlaySettings : MonoBehaviour
+{
+    public float overlayName;
+    public bool isVisible;
+    public Transform tf;
+}
+public class User : MonoBehaviour
+{
+
+    public List<OverlaySettings> overlaySettings;
+    public string userName;
+
+    public User(string name)
+    {
+        userName = name;
+    }
+
+    void RecordOverlaySettings(List<GameObject> overlays)
+    {
+        /*
+         * for overlay in overlays:
+         *      OverlaySettings newOverlay;
+         *          save name, enabled, and recttransform to object
+         *      add object to overlaySettings
+         */
+    }
+
+    void RestoreOverlaySettings(List<GameObject> overlays)
+    {
+        /*
+         * for overlay in overlays:
+         *      find matching name
+         *      set enabled, and recttransform based on overlaySettings
+         */
+    }
+
+}
 public class PopupSettings : MonoBehaviour
 {
-    [Header("UI")]
+    [Header("Settings UI")]
     public Canvas SettingsCanvas;
     public Button CloseButton;
     public Button ConfirmGlobalSettingsButton;
+
+    [Header("User")]
+    public Dropdown ChooseUserDropdown;
+    public InputField NewUserInputField;
+    public Button AddUserButton;
 
     [Header("LCM")]
     public InputField LCMInputField;
@@ -22,11 +64,15 @@ public class PopupSettings : MonoBehaviour
     public Text PTGUIFilenameText;
     public Material skyboxMaterial;
 
+    [Header("Overlays")]
+    // TODO: Include all the overlays here so we can save their xy coords
+
     bool prevEscBool = false;
     bool currEscBool = false;
 
     // Settings 
     // TODO: Save these in a JSON
+    List<User> users = new List<User> { }; // TODO: finish implementing this class
     string PTGUIFilename;
     string LCMURL;
 
@@ -35,8 +81,7 @@ public class PopupSettings : MonoBehaviour
         ChooseFileButton.onClick.AddListener(ChooseFileCallback);
         CloseButton.onClick.AddListener(CloseCallback);
         ConfirmGlobalSettingsButton.onClick.AddListener(ConfirmGlobalSettingsCallback);
-
-
+        AddUserButton.onClick.AddListener(AddUserCallback);
     }
 
 
@@ -72,8 +117,6 @@ public class PopupSettings : MonoBehaviour
         JSONNode PTGUISettings = JSON.Parse(jsonString);
         string test_a = PTGUISettings["contenttype"].Value;
 
-        Debug.Log(test_a);
-
         //if (path.Length != 0)
         //{
         //    var fileContent = File.ReadAllBytes(path);
@@ -90,8 +133,24 @@ public class PopupSettings : MonoBehaviour
     void ConfirmGlobalSettingsCallback()
     {
         LCMURL = LCMInputField.text;
-        Debug.Log(LCMURL);
         // TODO: Update LCM here
         // Create this function: LCMListenerObject.changeURL(LCMInputField.text)
+    }
+
+    void AddUserCallback()
+    {
+        // TODO: Prevent duplicate names, ensure name is not empty
+        // Create new user
+        User newUser = new User(NewUserInputField.text);
+        users.Add(newUser);
+
+        // Add new user name to drop down, select new user
+        ChooseUserDropdown.AddOptions(new List<string> { newUser.userName });
+        int userIdx = ChooseUserDropdown.options.FindIndex(ChooseUserDropdown => ChooseUserDropdown.text == newUser.userName);
+        ChooseUserDropdown.value = userIdx;
+
+        // Clear text when done
+        NewUserInputField.text = "";
+
     }
 }
