@@ -11,13 +11,15 @@ public class OverlayConfig
 {
     public string overlayName;
     public bool isVisible;
-    public Transform tf;
+    public float xPosition;
+    public float yPosition;
 
     public void recordOverlayConfig(GameObject overlay)
     {
         overlayName = overlay.name;
         isVisible = overlay.activeInHierarchy;
-        tf = overlay.transform;
+        xPosition = overlay.transform.position.x;
+        yPosition = overlay.transform.position.y;
     }
 }
 
@@ -66,18 +68,19 @@ public class RovVrSettings
 public class SaveData
 {
     private RovVrSettings applicationSettings;
+    string saveFilePath;
 
-    public SaveData(RovVrSettings settings)
+    public SaveData(RovVrSettings settings, string filepath)
     {
         applicationSettings = settings;
+        saveFilePath = filepath;
         SaveIntoJson();
     }
     
-
     public void SaveIntoJson()
     {
         string serializedSettings = JsonUtility.ToJson(applicationSettings);
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/ROV-VR_Application_Settings.json", serializedSettings);
+        System.IO.File.WriteAllText(saveFilePath, serializedSettings);
     }
 }
 
@@ -88,7 +91,6 @@ public class PopupSettings : MonoBehaviour
     [Header("Settings UI")]
     public Canvas SettingsCanvas;
     public Button CloseButton;
-    public Button ConfirmGlobalSettingsButton;
     public Button SaveAllButton;
 
     [Header("User")]
@@ -103,8 +105,7 @@ public class PopupSettings : MonoBehaviour
     public LCMListener LCMListenerObject;
 
     [Header("PTGUI")]
-    public Button ChooseFileButton;
-    public Text PTGUIFilenameText;
+    public InputField PTGUIFilepathInputField;
     public Material skyboxMaterial;
 
     [Header("Overlays")]
@@ -118,6 +119,7 @@ public class PopupSettings : MonoBehaviour
 
     RovVrSettings settings = new RovVrSettings();
 
+    string saveFilePath;
     int currUserIdx = -1;
     bool prevEscBool = false;
     bool currEscBool = false;
@@ -127,15 +129,17 @@ public class PopupSettings : MonoBehaviour
     {
         // TODO: When we implement load settings, remember to update LCM URL at start
 
-        ChooseFileButton.onClick.AddListener(ChooseFileCallback);
         CloseButton.onClick.AddListener(CloseCallback);
-        ConfirmGlobalSettingsButton.onClick.AddListener(ConfirmGlobalSettingsCallback);
         AddUserButton.onClick.AddListener(AddUserCallback);
         SaveAllButton.onClick.AddListener(SaveAllCallback);
         WriteUserSettingsButton.onClick.AddListener(WriteUserSettingsCallback);
 
         ChooseUserDropdown.onValueChanged.AddListener(delegate 
             { ChooseUserCallback(ChooseUserDropdown); });
+
+        saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
+        // Load saved settings
+        LoadSavedSettings();
     }
 
 
@@ -160,34 +164,9 @@ public class PopupSettings : MonoBehaviour
         //    Debug.Log("Pressed primary button.");
     }
 
-   
-    void ChooseFileCallback()
-    {
-        settings.PTGUIFilename = EditorUtility.OpenFilePanel("Select Calibration File", "", "pts");
-        PTGUIFilenameText.text = settings.PTGUIFilename;
-
-        var fileContent = File.ReadAllBytes(settings.PTGUIFilename);
-        string jsonString = System.Text.Encoding.UTF8.GetString(fileContent);
-        JSONNode PTGUISettings = JSON.Parse(jsonString);
-        string test_a = PTGUISettings["contenttype"].Value;
-
-        //if (path.Length != 0)
-        //{
-        //    var fileContent = File.ReadAllBytes(path);
-        //    texture.LoadImage(fileContent);
-        //}
-        //JsonTextReader reader = new JsonTextReader(new StringReader(json));
-    }
-
     void CloseCallback()
     {
         SettingsCanvas.enabled = false;
-    }
-
-    void ConfirmGlobalSettingsCallback()
-    {
-        settings.LCMURL = LCMInputField.text;
-        LCMListenerObject.changeURL(settings.LCMURL);
     }
 
     void AddUserCallback()
@@ -209,8 +188,21 @@ public class PopupSettings : MonoBehaviour
 
     void SaveAllCallback()
     {
+        // Save LCM URL
+        settings.LCMURL = LCMInputField.text;
+        LCMListenerObject.changeURL(settings.LCMURL);
+
+        // Save PTGUI Filepath
+        settings.PTGUIFilename = PTGUIFilepathInputField.text;
+
+        // TODO: Implement file reading and extract ptgui settings
+        //var fileContent = File.ReadAllBytes(settings.PTGUIFilename);
+        //string jsonString = System.Text.Encoding.UTF8.GetString(fileContent);
+        //JSONNode PTGUISettings = JSON.Parse(jsonString);
+        //string test_a = PTGUISettings["contenttype"].Value;
+
         print("Attempting to save data");
-        SaveData dataSaver = new SaveData(settings);
+        SaveData dataSaver = new SaveData(settings, saveFilePath);
     }
 
     void WriteUserSettingsCallback()
@@ -241,5 +233,35 @@ public class PopupSettings : MonoBehaviour
     {
         int i = ChooseUserDropdown.value;
         currUserIdx = i;
+    }
+
+    void LoadSavedSettings()
+    {
+        if (File.Exists(saveFilePath))
+        {
+            // Read the entire file and save its contents.
+            string fileContents = File.ReadAllText(saveFilePath);
+
+            // Deserialize the JSON data
+            settings = JsonUtility.FromJson<RovVrSettings>(fileContents);
+
+            // Update the UI
+            // Create a list containing all user names
+            List<string> userNameList = new List<string> { };
+            foreach (User user in settings.users)
+                userNameList.Add(user.userName);
+            
+            // Update Dropdown Options
+            ChooseUserDropdown.AddOptions(userNameList);
+            ChooseUserDropdown.value = 0; // TODO: add checking to make sure there are actually users
+
+            // Update LCM InputField
+            LCMInputField.text = settings.LCMURL;
+            PTGUIFilepathInputField.text = settings.PTGUIFilename;
+}
+        else
+        {
+            Debug.LogWarning("Save file not found!");
+        }
     }
 }
