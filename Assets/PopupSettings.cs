@@ -73,11 +73,15 @@ public class PopupSettings : MonoBehaviour
     // Settings 
     // TODO: Save these in a JSON
     List<User> users = new List<User> { }; // TODO: finish implementing this class
-    string PTGUIFilename;
-    string LCMURL;
+    [HideInInspector]
+    public string PTGUIFilename;
+    [HideInInspector]
+    public string LCMURL;
 
     void Start()
     {
+        // TODO: When we implement load settings, remember to update LCM URL at start
+
         ChooseFileButton.onClick.AddListener(ChooseFileCallback);
         CloseButton.onClick.AddListener(CloseCallback);
         ConfirmGlobalSettingsButton.onClick.AddListener(ConfirmGlobalSettingsCallback);
@@ -133,8 +137,7 @@ public class PopupSettings : MonoBehaviour
     void ConfirmGlobalSettingsCallback()
     {
         LCMURL = LCMInputField.text;
-        // TODO: Update LCM here
-        // Create this function: LCMListenerObject.changeURL(LCMInputField.text)
+        LCMListenerObject.changeURL(LCMURL);
     }
 
     void AddUserCallback()

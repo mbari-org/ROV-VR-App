@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using LCM;
 using LCM.LCM;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LCMListener : MonoBehaviour
 {   
     private static LCMListener instance;
+    SimpleSubscriber mySubscriber;
 
     // mini_rov_attitude_t
     private double roll_deg;
@@ -58,15 +61,11 @@ public class LCMListener : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
         instance = this;
-
-        myLCM = new LCM.LCM.LCM();
-
-        myLCM.SubscribeAll(new SimpleSubscriber());
+        setURL("udpm://239.255.76.67:7667"); // Default LCM URL
 
         StartCoroutine(SimulateRopeLength(3, 4, .01d));
-
     }
 
     class SimpleSubscriber : LCM.LCM.LCMSubscriber
@@ -145,9 +144,36 @@ public class LCMListener : MonoBehaviour
         }
     }
 
+    public void changeURL(string newURL)
+    {
+        // Close connection to previous URL
+        myLCM.Close();
+
+        // Set new URL
+        setURL(newURL);
+    }
+
+    void setURL(string newURL)
+    {
+        print("Attempting to use LCM URL: " + newURL);
+        try
+        {
+            // Create new LCM object
+            myLCM = new LCM.LCM.LCM(newURL);
+        }
+        catch (Exception)
+        {
+            print("Invalid or Unset LCM URL - reverting to default");
+            myLCM = new LCM.LCM.LCM("udpm://239.255.76.67:7667");
+        }
+
+        mySubscriber = new SimpleSubscriber();
+        myLCM.SubscribeAll(mySubscriber);
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-
     }
 }
