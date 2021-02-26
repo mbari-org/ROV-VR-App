@@ -8,20 +8,38 @@ using Unity.XR.OpenVR.SimpleJSON;
 
 public class PopupSettings : MonoBehaviour
 {
+    [Header("UI")]
     public Canvas SettingsCanvas;
+    public Button CloseButton;
+    public Button ConfirmGlobalSettingsButton;
+
+    [Header("LCM")]
+    public InputField LCMInputField;
+    public LCMListener LCMListenerObject;
+
+    [Header("PTGUI")]
     public Button ChooseFileButton;
     public Text PTGUIFilenameText;
+    public Material skyboxMaterial;
 
     bool prevEscBool = false;
     bool currEscBool = false;
 
-    // Settings
+    // Settings 
+    // TODO: Save these in a JSON
     string PTGUIFilename;
+    string LCMURL;
 
     void Start()
     {
         ChooseFileButton.onClick.AddListener(ChooseFileCallback);
+        CloseButton.onClick.AddListener(CloseCallback);
+        ConfirmGlobalSettingsButton.onClick.AddListener(ConfirmGlobalSettingsCallback);
+
+
     }
+
+
 
     void Update()
     {
@@ -43,9 +61,10 @@ public class PopupSettings : MonoBehaviour
         //    Debug.Log("Pressed primary button.");
     }
 
+   
     void ChooseFileCallback()
     {
-        PTGUIFilename = EditorUtility.OpenFilePanel("Overwrite with png", "", "png");
+        PTGUIFilename = EditorUtility.OpenFilePanel("Select Calibration File", "", "pts");
         PTGUIFilenameText.text = PTGUIFilename;
 
         var fileContent = File.ReadAllBytes(PTGUIFilename);
@@ -61,5 +80,18 @@ public class PopupSettings : MonoBehaviour
         //    texture.LoadImage(fileContent);
         //}
         //JsonTextReader reader = new JsonTextReader(new StringReader(json));
+    }
+
+    void CloseCallback()
+    {
+        SettingsCanvas.enabled = false;
+    }
+
+    void ConfirmGlobalSettingsCallback()
+    {
+        LCMURL = LCMInputField.text;
+        Debug.Log(LCMURL);
+        // TODO: Update LCM here
+        // Create this function: LCMListenerObject.changeURL(LCMInputField.text)
     }
 }
