@@ -123,6 +123,7 @@ public class PopupSettings : MonoBehaviour
     int currUserIdx = -1;
     bool prevEscBool = false;
     bool currEscBool = false;
+    List<GameObject> overlayList;
 
 
     void Start()
@@ -133,12 +134,26 @@ public class PopupSettings : MonoBehaviour
         AddUserButton.onClick.AddListener(AddUserCallback);
         SaveAllButton.onClick.AddListener(SaveAllCallback);
         WriteUserSettingsButton.onClick.AddListener(WriteUserSettingsCallback);
+        LoadUserSettingsButton.onClick.AddListener(LoadUserSettingsCallback);
 
         ChooseUserDropdown.onValueChanged.AddListener(delegate 
             { ChooseUserCallback(ChooseUserDropdown); });
 
-        saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
+        // Get all overlay gameobjects from mainOverlayCanvas
+        Transform[] allChildren = mainOverlayCanvas.GetComponentsInChildren<Transform>(includeInactive: true);
+        overlayList = new List<GameObject> { };
+
+        foreach (Transform child in allChildren)
+        {
+            if (child.parent == mainOverlayCanvas.transform)
+            {
+                GameObject overlay = child.gameObject;
+                overlayList.Add(overlay);
+            }
+        }
+
         // Load saved settings
+        saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
         LoadSavedSettings();
     }
 
@@ -213,19 +228,6 @@ public class PopupSettings : MonoBehaviour
             return;
         }
 
-        // Get all overlay gameobjects from mainOverlayCanvas
-        Transform[] allChildren = mainOverlayCanvas.GetComponentsInChildren<Transform>(includeInactive: true);
-        List<GameObject> overlayList = new List<GameObject> { };
-
-        foreach (Transform child in allChildren)
-        {
-            if (child.parent == mainOverlayCanvas.transform)
-            {
-                GameObject overlay = child.gameObject;
-                overlayList.Add(overlay);
-            }
-        }
-
         settings.users[currUserIdx].RecordOverlaySettings(overlayList);
     }
 
@@ -250,18 +252,38 @@ public class PopupSettings : MonoBehaviour
             List<string> userNameList = new List<string> { };
             foreach (User user in settings.users)
                 userNameList.Add(user.userName);
-            
+
+            currUserIdx = 0; // TODO: add checking to make sure there are actually users
+
             // Update Dropdown Options
             ChooseUserDropdown.AddOptions(userNameList);
-            ChooseUserDropdown.value = 0; // TODO: add checking to make sure there are actually users
+            ChooseUserDropdown.value = currUserIdx; 
 
             // Update LCM InputField
             LCMInputField.text = settings.LCMURL;
             PTGUIFilepathInputField.text = settings.PTGUIFilename;
-}
+
+            // Load default player settings
+            LoadUserSettingsCallback();
+        }
         else
         {
             Debug.LogWarning("Save file not found!");
+        }
+    }
+
+    void LoadUserSettingsCallback()
+    {
+        foreach (GameObject overlay in overlayList)
+        {
+            foreach (OverlayConfig overlayConfig in settings.users[currUserIdx].overlaySettings)
+            {
+                if (overlay.name == overlayConfig.overlayName)
+                {
+                    overlay.transform.position.Set(overlayConfig.xPosition, overlayConfig.yPosition, 0);
+                    overlay.SetActive(overlayConfig.isVisible);
+                }
+            }
         }
     }
 }
