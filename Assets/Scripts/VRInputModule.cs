@@ -68,7 +68,6 @@ public class VRInputModule : BaseInputModule
         // Trigger click if either controllers or keyboard key/foot pedal is pressed
         bool isDown = m_VRClickAction.GetStateDown(m_VRTargetSource) ^ Input.GetKeyDown(m_KeyboardClickKey);
         bool isUp = m_VRClickAction.GetStateUp(m_VRTargetSource) ^ Input.GetKeyUp(m_KeyboardClickKey);
-
         if(isDown) ProcessPress(m_Data);
         if(isUp) ProcessRelease(m_Data);
 

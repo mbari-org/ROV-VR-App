@@ -696,7 +696,8 @@ public class CurvedUIInputModule : StandaloneInputModule {
     {
         if(m_steamVRClickAction != null)
         {
-            CustomControllerButtonState = m_steamVRClickAction.GetState(SteamVRInputSource);
+            // Allow mouse click to be used as VR click substitute
+            CustomControllerButtonState = m_steamVRClickAction.GetState(SteamVRInputSource) || Input.GetMouseButtonDown(0);
             CustomControllerRay = new Ray(ControllerTransform.transform.position, ControllerTransform.transform.forward);
 
             ProcessCustomRayController();
@@ -1245,7 +1246,14 @@ public class CurvedUIInputModule : StandaloneInputModule {
     /// SteamVR 2.0 Action that should be used to click on UI elements.
     /// </summary>
     public SteamVR_Action_Boolean SteamVRClickAction {
-        get { return m_steamVRClickAction;  }
+        get
+        {
+            bool test = m_steamVRClickAction.active;
+            //Debug.Log(test);
+            //bool action = m_steamVRClickAction || Input.GetMouseButtonDown(0);
+            //return action;  }
+            return m_steamVRClickAction;
+        }
         set { m_steamVRClickAction = value; }
     }
 #endif // end of STEAMVR2

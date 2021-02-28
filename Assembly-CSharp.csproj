@@ -105,7 +105,6 @@
     <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPInputFieldCaret.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\Experimental\CurvedUITMPSubmesh.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
-    <Compile Include="Assets\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
     <Compile Include="Assets\Scripts\ButtonTransitioner.cs" />
     <Compile Include="Assets\Scripts\ClumpOverlay.cs" />
@@ -121,6 +120,8 @@
     <Compile Include="Assets\Scripts\LeapMotionCustomController.cs" />
     <Compile Include="Assets\Scripts\MenuAppearScript.cs" />
     <Compile Include="Assets\Scripts\Pointer.cs" />
+    <Compile Include="Assets\Scripts\PopupSettings.cs" />
+    <Compile Include="Assets\Scripts\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Scripts\TurnOverlayController.cs" />
     <Compile Include="Assets\Scripts\VRInputModule.cs" />
