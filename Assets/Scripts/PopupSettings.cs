@@ -18,8 +18,8 @@ public class OverlayConfig
     {
         overlayName = overlay.name;
         isVisible = overlay.activeInHierarchy;
-        xPosition = overlay.transform.position.x;
-        yPosition = overlay.transform.position.y;
+        xPosition = overlay.transform.localPosition.x;
+        yPosition = overlay.transform.localPosition.y;
     }
 }
 
@@ -280,7 +280,8 @@ public class PopupSettings : MonoBehaviour
             {
                 if (overlay.name == overlayConfig.overlayName)
                 {
-                    overlay.transform.position.Set(overlayConfig.xPosition, overlayConfig.yPosition, 0);
+                    Vector3 newPos = new Vector3(overlayConfig.xPosition, overlayConfig.yPosition, 0);
+                    overlay.transform.localPosition = newPos;
                     overlay.SetActive(overlayConfig.isVisible);
                 }
             }
