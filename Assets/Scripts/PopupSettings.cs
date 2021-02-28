@@ -43,16 +43,6 @@ public class User
             overlaySettings.Add(newOverlay);
         }
     }
-
-    void RestoreOverlaySettings(List<GameObject> overlays)
-    {
-        /*
-         * for overlay in overlays:
-         *      find matching name
-         *      set enabled, and recttransform based on overlaySettings
-         */
-    }
-
 }
 
 [System.Serializable]
@@ -97,8 +87,6 @@ public class PopupSettings : MonoBehaviour
     public Dropdown ChooseUserDropdown;
     public InputField NewUserInputField;
     public Button AddUserButton;
-    public Button LoadUserSettingsButton;
-    public Button WriteUserSettingsButton;
 
     [Header("LCM")]
     public InputField LCMInputField;
@@ -133,8 +121,6 @@ public class PopupSettings : MonoBehaviour
         CloseButton.onClick.AddListener(CloseCallback);
         AddUserButton.onClick.AddListener(AddUserCallback);
         SaveAllButton.onClick.AddListener(SaveAllCallback);
-        WriteUserSettingsButton.onClick.AddListener(WriteUserSettingsCallback);
-        LoadUserSettingsButton.onClick.AddListener(LoadUserSettingsCallback);
 
         ChooseUserDropdown.onValueChanged.AddListener(delegate 
             { ChooseUserCallback(ChooseUserDropdown); });
@@ -216,25 +202,25 @@ public class PopupSettings : MonoBehaviour
         //JSONNode PTGUISettings = JSON.Parse(jsonString);
         //string test_a = PTGUISettings["contenttype"].Value;
 
-        print("Attempting to save data");
-        SaveData dataSaver = new SaveData(settings, saveFilePath);
-    }
-
-    void WriteUserSettingsCallback()
-    {
+        // Save User Settings
         if (currUserIdx == -1)
         {
             Debug.LogWarning("No user selected. Overlay settings will not be saved");
             return;
         }
-
         settings.users[currUserIdx].RecordOverlaySettings(overlayList);
+
+        // Write data to file
+        print("Attempting to save data");
+        SaveData dataSaver = new SaveData(settings, saveFilePath);
     }
 
     void ChooseUserCallback(Dropdown ChooseUserDropdown)
     {
         int i = ChooseUserDropdown.value;
         currUserIdx = i;
+
+        LoadUserSettings();
     }
 
     void LoadSavedSettings()
@@ -264,7 +250,7 @@ public class PopupSettings : MonoBehaviour
             PTGUIFilepathInputField.text = settings.PTGUIFilename;
 
             // Load default player settings
-            LoadUserSettingsCallback();
+            LoadUserSettings();
         }
         else
         {
@@ -272,7 +258,7 @@ public class PopupSettings : MonoBehaviour
         }
     }
 
-    void LoadUserSettingsCallback()
+    void LoadUserSettings()
     {
         foreach (GameObject overlay in overlayList)
         {
