@@ -49,10 +49,22 @@ public class User
 public class RovVrSettings
 {
     // Settings 
-    // TODO: Save these in a JSON
-    public List<User> users = new List<User> { }; // TODO: finish implementing this class
+    public List<User> users = new List<User> { }; 
     public string PTGUIFilename;
     public string LCMURL;
+
+    public float L_CX;
+    public float L_CY;
+    public float L_RX;
+    public float L_RY;
+    public float R_CX;
+    public float R_CY;
+    public float R_RX;
+    public float R_RY;
+    public float a;
+    public float b;
+    public float c;
+
 }
 
 public class SaveData
@@ -96,14 +108,21 @@ public class PopupSettings : MonoBehaviour
     public InputField PTGUIFilepathInputField;
     public Material skyboxMaterial;
 
+    [Header("Advanced Settings")]
+    public Slider L_CX_slider;
+    public Slider L_CY_slider;
+    public Slider L_RX_slider;
+    public Slider L_RY_slider;
+    public Slider R_CX_slider;
+    public Slider R_CY_slider;
+    public Slider R_RX_slider;
+    public Slider R_RY_slider;
+    public Slider a_slider;
+    public Slider b_slider;
+    public Slider c_slider;
+
     [Header("Overlays")]
     public GameObject mainOverlayCanvas;
-    // TODO: Include all the overlays here so we can save their xy coords
-
-    // TODO: load in individaul gui gameobjects
-    // TODO: create a list of gui gameobjects
-    // TODO: modify WriteUserSettingsCallback to take in this list 
-    // TODO: WE LEFT OFF HERE
 
     RovVrSettings settings = new RovVrSettings();
 
@@ -141,8 +160,22 @@ public class PopupSettings : MonoBehaviour
         // Load saved settings
         saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
         LoadSavedSettings();
-    }
 
+        L_CX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_CX_slider, "_L_CX"); });
+        L_CY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_CY_slider, "_L_CY"); });
+        R_CX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_CX_slider, "_R_CX"); });
+        R_CY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_CY_slider, "_R_CY"); });
+        L_RX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_RX_slider, "_L_RX"); });
+        L_RY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_RY_slider, "_L_RY"); });
+        R_RX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_RX_slider, "_R_RX"); });
+        R_RY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_RY_slider, "_R_RY"); });
+        a_slider.onValueChanged.AddListener(delegate { SliderCallbacks(a_slider, "_a"); });
+        b_slider.onValueChanged.AddListener(delegate { SliderCallbacks(b_slider, "_b"); });
+        c_slider.onValueChanged.AddListener(delegate { SliderCallbacks(c_slider, "_c"); });
+
+        // Close settings on startup
+        SettingsCanvas.enabled = false;
+    }
 
 
     void Update()
@@ -273,4 +306,22 @@ public class PopupSettings : MonoBehaviour
             }
         }
     }
+
+    void LoadCameraSettings()
+    {
+        //L_CX_slider.value = skyboxMaterial.GetFloat("_L_CX");
+        //L_CY_slider.value = skyboxMaterial.GetFloat("_L_CY");
+        //R_CX_slider.value = skyboxMaterial.GetFloat("_R_CX");
+        //R_CY_slider.value = skyboxMaterial.GetFloat("_R_CY");
+        //L_RX_slider.value = skyboxMaterial.GetFloat("_L_RX");
+        //L_RY_slider.value = skyboxMaterial.GetFloat("_L_RY");
+        //R_RX_slider.value = skyboxMaterial.GetFloat("_R_RX");
+        //R_RY_slider.value = skyboxMaterial.GetFloat("_R_RY");
+    }
+
+    void SliderCallbacks(Slider slider, string parameter)
+    {
+        skyboxMaterial.SetFloat(parameter, slider.value);
+    }
+
 }

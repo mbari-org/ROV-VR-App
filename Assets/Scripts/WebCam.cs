@@ -4,10 +4,10 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq; // For checking if items exist in array
 
-// TODO: Disable unused displays
 // TODO: Figure out if aspect ratio fitter is necessary
 // TODO: enable hotplugging
 // TODO: Create a button that makes new displays
+// TODO: Disable video player when unused
 
 // Note: Some cameras will throw a "could not start graph" and "could not pause pControl" error - 
 // these will just not be displayed, but this could be handled more elegantly
@@ -28,8 +28,11 @@ public class WebCam : MonoBehaviour
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
-    public Dropdown skyBoxDropdown;
+    public Dropdown RskyBoxDropdown;
+    public Dropdown LskyBoxDropdown;
     public Material skyBoxMaterial;
+    public Texture LskyBoxDefaultTexture;
+    public Texture RskyBoxDefaultTexture;
     public GameObject display1;
     public GameObject display2;
     public GameObject display3;
@@ -45,7 +48,8 @@ public class WebCam : MonoBehaviour
     // List containing what camera index is displayed on each display
     // -1 if display is inactive
     private int[] displayCameraIdxs = new int[numDisplays];
-    private int skyboxCameraIdx = -1; // Initialize skybox camera idx value
+    private int LskyboxCameraIdx = -1; // Initialize skybox camera idx value
+    private int RskyboxCameraIdx = -1; // Initialize skybox camera idx value
 
     // For dropdown menu
     List<string> cameraNameList = new List<string>();
@@ -91,15 +95,18 @@ public class WebCam : MonoBehaviour
         }
 
         // Update dropdown options
-        skyBoxDropdown.ClearOptions();
-        skyBoxDropdown.AddOptions(cameraNameList);
+        LskyBoxDropdown.ClearOptions();
+        RskyBoxDropdown.ClearOptions();
+        LskyBoxDropdown.AddOptions(cameraNameList);
+        RskyBoxDropdown.AddOptions(cameraNameList);
         for (int i = 0; i < numDisplays; i++)
         {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
         }
         // TODO: Insert this in the above loop without things breaking
-        skyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(skyBoxDropdown, (int)-1, devices); });
+        LskyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(LskyBoxDropdown, (int)-2, devices); });
+        RskyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(RskyBoxDropdown, (int)-1, devices); });
         dropdownArray[0].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[0], (int)0, devices); });
         dropdownArray[1].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[1], (int)1, devices); });
         dropdownArray[2].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[2], (int)2, devices); });
@@ -116,11 +123,16 @@ public class WebCam : MonoBehaviour
         {
             int prevCamIdx;
 
-            if (displayIdx == -1) // Skybox camera feed
+            if (displayIdx == -2) // Left Skybox camera feed
             {
-                skyBoxMaterial.mainTexture = null;
-                prevCamIdx = skyboxCameraIdx;
-                skyboxCameraIdx = -1;
+                skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), LskyBoxDefaultTexture);
+                prevCamIdx = LskyboxCameraIdx;
+                LskyboxCameraIdx = -1;
+            } else if (displayIdx == -1) // Right Skybox camera feed
+            {
+                skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), RskyBoxDefaultTexture);
+                prevCamIdx = RskyboxCameraIdx;
+                RskyboxCameraIdx = -1;
             }
             else // Non-skybox camera feed
             {
@@ -132,7 +144,7 @@ public class WebCam : MonoBehaviour
             if (prevCamIdx != -1) // Only run the check for valid cameras
             {
                 // Check if the camera index is not being used by either the skybox or the other displays
-                if (skyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+                if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
                 {
                     if (camList[prevCamIdx].isPlaying)
                     {
@@ -148,12 +160,17 @@ public class WebCam : MonoBehaviour
         {
             int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
 
-            if (displayIdx == -1) // Skybox camera feed
+            if (displayIdx == -2) // Left Skybox camera feed
             {
-                skyBoxMaterial.mainTexture = camList[cameraIdx];
-                skyboxCameraIdx = cameraIdx;
-            }
-            else // Non-skybox camera feed
+                //LskyBoxTexture = camList[cameraIdx];
+                skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), camList[cameraIdx]);
+                LskyboxCameraIdx = cameraIdx;
+            } else if (displayIdx == -1) // Right Skybox camera feed
+            {
+                //RskyBoxTexture = camList[cameraIdx];
+                skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), camList[cameraIdx]);
+                RskyboxCameraIdx = cameraIdx;
+            } else // Non-skybox camera feed
             {
                 backgroundArray[displayIdx].texture = camList[cameraIdx];
                 displayCameraIdxs[displayIdx] = cameraIdx;
