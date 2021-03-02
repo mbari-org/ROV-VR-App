@@ -40,10 +40,14 @@ namespace UnityEditor
 
             if (EditorGUILayout.BeginFadeGroup(m_ShowFisheyeLayout.faded))
             {
-                // Fisheye requires two separate images
+                // Fisheye requires two separate images               
                 ShowProp(materialEditor, FindProperty("_LTex", props));
                 ShowProp(materialEditor, FindProperty("_RTex", props));
 
+                // 2D/3D Toggle
+                ShowProp(materialEditor, FindProperty("_Mode", props));
+
+                // Fisheye Settings
                 ShowProp(materialEditor, FindProperty("_L_CX", props));
                 ShowProp(materialEditor, FindProperty("_L_CY", props));
                 ShowProp(materialEditor, FindProperty("_L_RX", props));
@@ -59,7 +63,7 @@ namespace UnityEditor
                 ShowProp(materialEditor, FindProperty("_c", props));
             } else
             {
-                // Other layouts expect one stereo images
+                // Other layouts expect one stereo image
                 ShowProp(materialEditor, FindProperty("_Tex", props));
             }
 

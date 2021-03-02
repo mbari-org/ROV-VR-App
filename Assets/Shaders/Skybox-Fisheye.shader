@@ -12,6 +12,7 @@ Shader "Skybox/Fisheye" {
         [KeywordEnum(6 Frames Layout, Latitude Longitude Layout, Fisheye Layout)] _Mapping("Mapping", Float) = 1
         [Enum(360 Degrees, 0, 180 Degrees, 1)] _ImageType("Image Type", Float) = 0
         [Toggle] _MirrorOnBack("Mirror on Back", Float) = 0
+        [Enum(3D Mode, 0, 2D Mode, 1)] _Mode("Display Mode", Int) = 0
         [Enum(None, 0, Side by Side, 1, Over Under, 2)] _Layout("3D Layout", Float) = 0
 
         // Fisheye Calibration
@@ -63,6 +64,8 @@ Shader "Skybox/Fisheye" {
                 sampler2D _RTex;
                 float4 _RTex_TexelSize;
                 half4 _RTex_HDR;
+
+                int _Mode;
 
                 float _L_CX;
                 float _L_CY;
@@ -260,18 +263,31 @@ Shader "Skybox/Fisheye" {
 
                     half4 tex;
                     half3 c;
-                    if (unity_StereoEyeIndex == 0) { // Left Eye
+                    
+                    if (_Mode == 0)
+                    {
+                        // 3D Mode - compute separate frames for each eye
+                        if (unity_StereoEyeIndex == 0) { // Left Eye
+                            tc.x = (2 * _L_RX * tc.x) + _L_CX - _L_RX;
+                            tc.y = (2 * _L_RY * tc.y) + _L_CY - _L_RY;
+                            tex = tex2D(_LTex, tc);
+                            c = DecodeHDR(tex, _LTex_HDR);
+                        }
+                        else { // Right Eye
+                            tc.x = (2 * _R_RX * tc.x) + _R_CX - _R_RX;
+                            tc.y = (2 * _R_RY * tc.y) + _R_CY - _R_RY;
+                            tex = tex2D(_RTex, tc);
+                            c = DecodeHDR(tex, _RTex_HDR);
+                        }
+                    }
+                    else {
+                        // 2D Mode - use one eye only
                         tc.x = (2 * _L_RX * tc.x) + _L_CX - _L_RX;
                         tc.y = (2 * _L_RY * tc.y) + _L_CY - _L_RY;
                         tex = tex2D(_LTex, tc);
                         c = DecodeHDR(tex, _LTex_HDR);
                     }
-                    else { // Right Eye
-                        tc.x = (2 * _R_RX * tc.x) + _R_CX - _R_RX;
-                        tc.y = (2 * _R_RY * tc.y) + _R_CY - _R_RY;
-                        tex = tex2D(_RTex, tc);
-                        c = DecodeHDR(tex, _RTex_HDR);
-                    }
+
 
                     if (tc.y > 1 || tc.y < 0)
                         return half4(0, 0, 0, 1);
