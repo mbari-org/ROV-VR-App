@@ -36,7 +36,7 @@ public class User
 
     public void RecordOverlaySettings(List<GameObject> overlays)
     {
-        foreach(GameObject overlay in overlays)
+        foreach (GameObject overlay in overlays)
         {
             OverlayConfig newOverlay = new OverlayConfig();
             newOverlay.recordOverlayConfig(overlay);
@@ -48,8 +48,9 @@ public class User
 [System.Serializable]
 public class RovVrSettings
 {
+    // TODO: save camera selection
     // Settings 
-    public List<User> users = new List<User> { }; 
+    public List<User> users = new List<User> { };
     public string PTGUIFilename;
     public string LCMURL;
 
@@ -65,6 +66,8 @@ public class RovVrSettings
     public float b;
     public float c;
 
+    public bool stereoEnabled;
+
 }
 
 public class SaveData
@@ -78,7 +81,7 @@ public class SaveData
         saveFilePath = filepath;
         SaveIntoJson();
     }
-    
+
     public void SaveIntoJson()
     {
         string serializedSettings = JsonUtility.ToJson(applicationSettings);
@@ -120,6 +123,7 @@ public class PopupSettings : MonoBehaviour
     public Slider a_slider;
     public Slider b_slider;
     public Slider c_slider;
+    public Toggle StereoToggle;
 
     [Header("Overlays")]
     public GameObject mainOverlayCanvas;
@@ -135,14 +139,12 @@ public class PopupSettings : MonoBehaviour
 
     void Start()
     {
-        // TODO: When we implement load settings, remember to update LCM URL at start
-
         CloseButton.onClick.AddListener(CloseCallback);
         AddUserButton.onClick.AddListener(AddUserCallback);
         SaveAllButton.onClick.AddListener(SaveAllCallback);
 
-        ChooseUserDropdown.onValueChanged.AddListener(delegate 
-            { ChooseUserCallback(ChooseUserDropdown); });
+        ChooseUserDropdown.onValueChanged.AddListener(delegate
+        { ChooseUserCallback(ChooseUserDropdown); });
 
         // Get all overlay gameobjects from mainOverlayCanvas
         Transform[] allChildren = mainOverlayCanvas.GetComponentsInChildren<Transform>(includeInactive: true);
@@ -156,6 +158,9 @@ public class PopupSettings : MonoBehaviour
                 overlayList.Add(overlay);
             }
         }
+
+        StereoToggle.onValueChanged.AddListener(delegate
+        { StereoCallback(StereoToggle); });
 
         // Load saved settings
         saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
@@ -173,6 +178,7 @@ public class PopupSettings : MonoBehaviour
         b_slider.onValueChanged.AddListener(delegate { SliderCallbacks(b_slider, "_b"); });
         c_slider.onValueChanged.AddListener(delegate { SliderCallbacks(c_slider, "_c"); });
 
+
         // Close settings on startup
         SettingsCanvas.enabled = false;
     }
@@ -189,8 +195,8 @@ public class PopupSettings : MonoBehaviour
         }
 
         prevEscBool = currEscBool;
-        
-        
+
+
         //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         ////Debug.Log(Input.mousePosition);
 
@@ -228,6 +234,9 @@ public class PopupSettings : MonoBehaviour
 
         // Save PTGUI Filepath
         settings.PTGUIFilename = PTGUIFilepathInputField.text;
+
+        // Save camera settings
+        settings.stereoEnabled = StereoToggle.isOn;
 
         // TODO: Implement file reading and extract ptgui settings
         //var fileContent = File.ReadAllBytes(settings.PTGUIFilename);
@@ -276,11 +285,14 @@ public class PopupSettings : MonoBehaviour
 
             // Update Dropdown Options
             ChooseUserDropdown.AddOptions(userNameList);
-            ChooseUserDropdown.value = currUserIdx; 
+            ChooseUserDropdown.value = currUserIdx;
 
             // Update LCM InputField
             LCMInputField.text = settings.LCMURL;
             PTGUIFilepathInputField.text = settings.PTGUIFilename;
+
+            // Update Stereo Toggle
+            StereoToggle.isOn = settings.stereoEnabled;
 
             // Load default player settings
             LoadUserSettings();
@@ -322,6 +334,15 @@ public class PopupSettings : MonoBehaviour
     void SliderCallbacks(Slider slider, string parameter)
     {
         skyboxMaterial.SetFloat(parameter, slider.value);
+    }
+
+    void StereoCallback(Toggle toggle)
+    {
+        if (toggle.isOn)
+            skyboxMaterial.SetInt("_Mode", 0);
+        else
+            skyboxMaterial.SetInt("_Mode", 1);
+
     }
 
 }

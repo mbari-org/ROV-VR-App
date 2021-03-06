@@ -93,6 +93,7 @@ Material:
     - _Mapping: 2
     - _Metallic: 0
     - _MirrorOnBack: 0
+    - _Mode: 1
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _R_CX: 0.493
