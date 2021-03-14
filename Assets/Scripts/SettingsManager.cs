@@ -107,22 +107,9 @@ public class SettingsManager : MonoBehaviour
     public InputField LCMInputField;
     public LCMListener LCMListenerObject;
 
-    [Header("PTGUI")]
+    [Header("Camera Settings")]
     public InputField PTGUIFilepathInputField;
     public Material skyboxMaterial;
-
-    [Header("Advanced Settings")]
-    public Slider L_CX_slider;
-    public Slider L_CY_slider;
-    public Slider L_RX_slider;
-    public Slider L_RY_slider;
-    public Slider R_CX_slider;
-    public Slider R_CY_slider;
-    public Slider R_RX_slider;
-    public Slider R_RY_slider;
-    public Slider a_slider;
-    public Slider b_slider;
-    public Slider c_slider;
     public Toggle StereoToggle;
 
     [Header("Overlays")]
@@ -165,19 +152,6 @@ public class SettingsManager : MonoBehaviour
         // Load saved settings
         saveFilePath = Application.persistentDataPath + "/ROV-VR_Application_Settings.json";
         LoadSavedSettings();
-
-        L_CX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_CX_slider, "_L_CX"); });
-        L_CY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_CY_slider, "_L_CY"); });
-        R_CX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_CX_slider, "_R_CX"); });
-        R_CY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_CY_slider, "_R_CY"); });
-        L_RX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_RX_slider, "_L_RX"); });
-        L_RY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(L_RY_slider, "_L_RY"); });
-        R_RX_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_RX_slider, "_R_RX"); });
-        R_RY_slider.onValueChanged.AddListener(delegate { SliderCallbacks(R_RY_slider, "_R_RY"); });
-        a_slider.onValueChanged.AddListener(delegate { SliderCallbacks(a_slider, "_a"); });
-        b_slider.onValueChanged.AddListener(delegate { SliderCallbacks(b_slider, "_b"); });
-        c_slider.onValueChanged.AddListener(delegate { SliderCallbacks(c_slider, "_c"); });
-
 
         // Close settings on startup
         SettingsCanvas.enabled = false;
@@ -237,6 +211,17 @@ public class SettingsManager : MonoBehaviour
 
         // Save camera settings
         settings.stereoEnabled = StereoToggle.isOn;
+        settings.L_CX = skyboxMaterial.GetFloat("_L_CX");
+        settings.L_CY = skyboxMaterial.GetFloat("_L_CY");
+        settings.L_RX = skyboxMaterial.GetFloat("_R_CX");
+        settings.L_RY = skyboxMaterial.GetFloat("_R_CY");
+        settings.R_CX = skyboxMaterial.GetFloat("_L_RX");
+        settings.R_CY = skyboxMaterial.GetFloat("_L_RY");
+        settings.R_RX = skyboxMaterial.GetFloat("_R_RX");
+        settings.R_RY = skyboxMaterial.GetFloat("_R_RY");
+        settings.a = skyboxMaterial.GetFloat("_a");
+        settings.b = skyboxMaterial.GetFloat("_b");
+        settings.c = skyboxMaterial.GetFloat("_c");
 
         // TODO: Implement file reading and extract ptgui settings
         //var fileContent = File.ReadAllBytes(settings.PTGUIFilename);
@@ -291,8 +276,19 @@ public class SettingsManager : MonoBehaviour
             LCMInputField.text = settings.LCMURL;
             PTGUIFilepathInputField.text = settings.PTGUIFilename;
 
-            // Update Stereo Toggle
+            // Update Stereo settings
             StereoToggle.isOn = settings.stereoEnabled;
+            skyboxMaterial.SetFloat("_L_CX", settings.L_CX);
+            skyboxMaterial.SetFloat("_L_CY", settings.L_CY);
+            skyboxMaterial.SetFloat("_R_CX", settings.L_RX);
+            skyboxMaterial.SetFloat("_R_CY", settings.L_RY);
+            skyboxMaterial.SetFloat("_L_RX", settings.R_CX);
+            skyboxMaterial.SetFloat("_L_RY", settings.R_CY);
+            skyboxMaterial.SetFloat("_R_RX", settings.R_RX);
+            skyboxMaterial.SetFloat("_R_RY", settings.R_RY);
+            skyboxMaterial.SetFloat("_a", settings.a);
+            skyboxMaterial.SetFloat("_b", settings.b);
+            skyboxMaterial.SetFloat("_c", settings.c);
 
             // Load default player settings
             LoadUserSettings();
@@ -317,23 +313,6 @@ public class SettingsManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    void LoadCameraSettings()
-    {
-        //L_CX_slider.value = skyboxMaterial.GetFloat("_L_CX");
-        //L_CY_slider.value = skyboxMaterial.GetFloat("_L_CY");
-        //R_CX_slider.value = skyboxMaterial.GetFloat("_R_CX");
-        //R_CY_slider.value = skyboxMaterial.GetFloat("_R_CY");
-        //L_RX_slider.value = skyboxMaterial.GetFloat("_L_RX");
-        //L_RY_slider.value = skyboxMaterial.GetFloat("_L_RY");
-        //R_RX_slider.value = skyboxMaterial.GetFloat("_R_RX");
-        //R_RY_slider.value = skyboxMaterial.GetFloat("_R_RY");
-    }
-
-    void SliderCallbacks(Slider slider, string parameter)
-    {
-        skyboxMaterial.SetFloat(parameter, slider.value);
     }
 
     void StereoCallback(Toggle toggle)
