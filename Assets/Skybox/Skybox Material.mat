@@ -85,20 +85,20 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _ImageType: 1
-    - _L_CX: 0.474
-    - _L_CY: 0.464
-    - _L_RX: 0.322
-    - _L_RY: 0.569
+    - _L_CX: 0.47344735
+    - _L_CY: 0.45682657
+    - _L_RX: 0.31840745
+    - _L_RY: 0.52640384
     - _Layout: 0
     - _Mapping: 2
     - _Metallic: 0
     - _MirrorOnBack: 0
-    - _Mode: 1
+    - _Mode: 0
     - _OcclusionStrength: 1
     - _QueueOffset: 0
-    - _R_CX: 0.493
-    - _R_CY: 0.486
-    - _R_RX: 0.322
+    - _R_CX: 0.4924334
+    - _R_CY: 0.49366966
+    - _R_RX: 0.33460402
     - _R_RY: 0.569
     - _ReceiveShadows: 1
     - _Rotation: 0
@@ -109,7 +109,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _a: 0
+    - _a: -0.0009511236
     - _b: 0
     - _c: 0
     m_Colors:
