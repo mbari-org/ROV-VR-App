@@ -1248,7 +1248,7 @@ public class CurvedUIInputModule : StandaloneInputModule {
     public SteamVR_Action_Boolean SteamVRClickAction {
         get
         {
-            bool test = m_steamVRClickAction.active;
+            //bool test = m_steamVRClickAction.active;
             //Debug.Log(test);
             //bool action = m_steamVRClickAction || Input.GetMouseButtonDown(0);
             //return action;  }
