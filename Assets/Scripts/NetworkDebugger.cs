@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class NetworkDebugger : MonoBehaviour
 {
-    public DataCanvas outputCanvas;
+    public LCMDebugger outputCanvas;
 
     // Start is called before the first frame update
     void Start()

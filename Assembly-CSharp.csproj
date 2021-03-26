@@ -110,7 +110,6 @@
     <Compile Include="Assets\Scripts\CameraSettingsManager.cs" />
     <Compile Include="Assets\Scripts\ClumpOverlay.cs" />
     <Compile Include="Assets\Scripts\CustomHandSwitcher.cs" />
-    <Compile Include="Assets\Scripts\DataCanvas.cs" />
     <Compile Include="Assets\Scripts\DeltaOverlayController.cs" />
     <Compile Include="Assets\Scripts\DepthOverlayController.cs" />
     <Compile Include="Assets\Scripts\DragWindow.cs" />
@@ -118,6 +117,7 @@
     <Compile Include="Assets\Scripts\FakeLCMPublisher.cs" />
     <Compile Include="Assets\Scripts\GeolocationController.cs" />
     <Compile Include="Assets\Scripts\HeadingOverlayController.cs" />
+    <Compile Include="Assets\Scripts\LCMDebugger.cs" />
     <Compile Include="Assets\Scripts\LCMListener.cs" />
     <Compile Include="Assets\Scripts\LeapMotionCustomController.cs" />
     <Compile Include="Assets\Scripts\MenuAppearScript.cs" />
