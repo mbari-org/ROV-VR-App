@@ -8,9 +8,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LCMListener : MonoBehaviour
-{   
+{
+   
     private static LCMListener instance;
     SimpleSubscriber mySubscriber;
+    public LCMDebugger myDebugger;
 
     // mini_rov_attitude_t
     private double roll_deg;
@@ -70,8 +72,18 @@ public class LCMListener : MonoBehaviour
 
     class SimpleSubscriber : LCM.LCM.LCMSubscriber
     {
+        LCMDebugger d;
+
+        // Constructor
+        public SimpleSubscriber(LCMDebugger debugger)
+        {
+            d = debugger;
+        }
+
         public void MessageReceived(LCM.LCM.LCM lcm, string channel, LCM.LCM.LCMDataInputStream dins)
         {
+            d.updateMessageList(channel);
+       
             if (channel == "MINIROV_ATTITUDE")
             {
                 mwt.mini_rov_attitude_t msg = new mwt.mini_rov_attitude_t(dins);
@@ -167,7 +179,7 @@ public class LCMListener : MonoBehaviour
             myLCM = new LCM.LCM.LCM("udpm://239.255.76.67:7667");
         }
 
-        mySubscriber = new SimpleSubscriber();
+        mySubscriber = new SimpleSubscriber(myDebugger);
         myLCM.SubscribeAll(mySubscriber);
     }
 

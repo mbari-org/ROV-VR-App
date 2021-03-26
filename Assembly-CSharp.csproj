@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraSettingsManager.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_AnimateCurvedFillOnStart.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_CameraController.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_CameraRotationOnButtonHeld.cs" />
@@ -108,6 +107,7 @@
     <Compile Include="Assets\CurvedUI\Scripts\OptionalDependencyAttribute.cs" />
     <Compile Include="Assets\Scripts\AttitudeOverlayController.cs" />
     <Compile Include="Assets\Scripts\ButtonTransitioner.cs" />
+    <Compile Include="Assets\Scripts\CameraSettingsManager.cs" />
     <Compile Include="Assets\Scripts\ClumpOverlay.cs" />
     <Compile Include="Assets\Scripts\CustomHandSwitcher.cs" />
     <Compile Include="Assets\Scripts\DeltaOverlayController.cs" />
@@ -117,9 +117,11 @@
     <Compile Include="Assets\Scripts\FakeLCMPublisher.cs" />
     <Compile Include="Assets\Scripts\GeolocationController.cs" />
     <Compile Include="Assets\Scripts\HeadingOverlayController.cs" />
+    <Compile Include="Assets\Scripts\LCMDebugger.cs" />
     <Compile Include="Assets\Scripts\LCMListener.cs" />
     <Compile Include="Assets\Scripts\LeapMotionCustomController.cs" />
     <Compile Include="Assets\Scripts\MenuAppearScript.cs" />
+    <Compile Include="Assets\Scripts\NetworkDebugger.cs" />
     <Compile Include="Assets\Scripts\Pointer.cs" />
     <Compile Include="Assets\Scripts\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\SettingsManager.cs" />
