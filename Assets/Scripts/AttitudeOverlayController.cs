@@ -52,15 +52,8 @@ public class AttitudeOverlayController : MonoBehaviour
         yaw.GetComponent<TextMesh>().text = "Yaw: " + listener.Yaw.ToString();
 
         //Rotates printed attitude text
-        //yawObject.transform.rotation = Quaternion.Euler(-1 * (float)listener.Pitch, 180 -1 * (float)listener.Yaw, -1 * (float)listener.Roll);
         yawObject.transform.rotation = Quaternion.LookRotation(transform.position - camTarget.position);
         rollObject.transform.rotation = Quaternion.LookRotation(transform.position - camTarget.position);
         pitchObject.transform.rotation = Quaternion.LookRotation(transform.position - camTarget.position);
-        //rollObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //pitchObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-
-        //yawObject.transform.LookAt(camTarget);
-        //rollObject.transform.LookAt(camTarget);
-        //pitchObject.transform.LookAt(camTarget);
     }
 }
