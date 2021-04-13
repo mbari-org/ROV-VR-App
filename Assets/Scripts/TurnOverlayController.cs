@@ -38,8 +38,10 @@ public class TurnOverlayController : MonoBehaviour
     // Initialize turns
     private double turns = 0.0;
 
-    // Initialize turn degrees for compass
+    // Initialize turn degrees/radians for compass
     private double turnDegrees = 0.0;
+    private double turnDegreesOffset = 0.0;
+    private double radians = 0.0;
 
     // Radius of turns overlay circle (approx)
     private double radius = 12.0;
@@ -72,6 +74,10 @@ public class TurnOverlayController : MonoBehaviour
 
         // Update turn degrees for rotating compass
         turnDegrees = (turns % 1.0) * 360.0;
+
+        //degrees to radians (+ offset by 90 degrees and reverse turn) for graphing purposes
+        turnDegreesOffset = turnDegrees * -1.0 + 90.0;
+        radians = turnDegreesOffset * Mathf.Deg2Rad;
     }
 
     void UpdateCompassOverlay()
@@ -110,10 +116,10 @@ public class TurnOverlayController : MonoBehaviour
         {
             //x = r cos theta. y = r sin theta. r is variable dependent of how old the data is. theta = turnDegrees.
             double r = radius / maxDotsVisible * (maxDotsVisible - xIndex); //maxDotsVisible or length of list?
-            double degrees = valueList[xIndex];
-            double xPos = r * Math.Cos(degrees);
-            double yPos = r * Math.Sin(degrees);
-            Debug.Log("dot info: " + degrees + ", " + r + ", " + xPos + ", " + yPos);
+            double rad = valueList[xIndex];
+            double xPos = r * Math.Cos(rad);
+            double yPos = r * Math.Sin(rad);
+            Debug.Log("dot info: " + rad + ", " + r + ", " + xPos + ", " + yPos);
             GameObject pointGameObject = CreatePoint(xPos, yPos);
             gameObjectList.Add(pointGameObject);
             lastPointGameObject = pointGameObject;
@@ -127,7 +133,7 @@ public class TurnOverlayController : MonoBehaviour
         UpdateTurnValues();
         UpdateCompassOverlay();
         UpdateTextDisplay();
-        _valueList.Add(turnDegrees);//problem
+        _valueList.Add(radians);//problem
         List<double> turnsGraphPoints = SamplePoints(_valueList);
         //foreach (var x in _valueList)//shows growing list, not restricted list? for debugging (_valueList or turnsGraphPoints)
         //{
