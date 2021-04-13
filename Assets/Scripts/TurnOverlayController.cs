@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;//why?
 using TMPro;
 using System;
+using System.Net;//why?
 using System.IO.Ports;
 using System.Security.AccessControl;
+using System.Security.Cryptography;//why?
 using System.Collections.Specialized;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;//why?
 
 // Useful References:
 // - https://docs.unity3d.com/ScriptReference/Transform.Rotate.html
@@ -37,8 +41,8 @@ public class TurnOverlayController : MonoBehaviour
     // Initialize turn degrees for compass
     private double turnDegrees = 0.0;
 
-    //radius of turns overlay circle (approx)
-    private double radius = 13.0;
+    // Radius of turns overlay circle (approx)
+    private double radius = 12.0;
 
 
     // Start is called before the first frame update
@@ -50,10 +54,15 @@ public class TurnOverlayController : MonoBehaviour
         // Set up text display for turn
         turnText = turnLabelGameObject.GetComponent<TextMeshProUGUI>();
 
+        //Set up container for graph points
         turnsGraphContainer = turnsGraphContainerGameObject.GetComponent<RectTransform>();
         turnsGraphTransform = turnsGraphContainerGameObject.GetComponent<Transform>();
 
-        CreatePoint(-10, -10);
+        // Initialize list of points
+        gameObjectList = new List<GameObject>();
+
+        //Test point
+        //CreatePoint(-8, -8);
     }
 
     void UpdateTurnValues()
@@ -86,7 +95,7 @@ public class TurnOverlayController : MonoBehaviour
     void UpdateGraph(List<double> valueList)
     {
         // Delete all points
-        foreach (GameObject gameObject in gameObjectList)
+        foreach (GameObject gameObject in gameObjectList)//problem
         {
             Destroy(gameObject);
         }
@@ -101,8 +110,10 @@ public class TurnOverlayController : MonoBehaviour
         {
             //x = r cos theta. y = r sin theta. r is variable dependent of how old the data is. theta = turnDegrees.
             double r = radius / maxDotsVisible * (maxDotsVisible - xIndex); //maxDotsVisible or length of list?
-            double xPos = r * Math.Cos(turnDegrees);
-            double yPos = r * Math.Sin(turnDegrees);
+            double degrees = valueList[xIndex];
+            double xPos = r * Math.Cos(degrees);
+            double yPos = r * Math.Sin(degrees);
+            Debug.Log("dot info: " + degrees + ", " + r + ", " + xPos + ", " + yPos);
             GameObject pointGameObject = CreatePoint(xPos, yPos);
             gameObjectList.Add(pointGameObject);
             lastPointGameObject = pointGameObject;
@@ -116,9 +127,14 @@ public class TurnOverlayController : MonoBehaviour
         UpdateTurnValues();
         UpdateCompassOverlay();
         UpdateTextDisplay();
-        _valueList.Add(listener.Depth);
+        _valueList.Add(turnDegrees);//problem
         List<double> turnsGraphPoints = SamplePoints(_valueList);
-        UpdateGraph(turnsGraphPoints);
+        //foreach (var x in _valueList)//shows growing list, not restricted list? for debugging (_valueList or turnsGraphPoints)
+        //{
+        //    Debug.Log(x.ToString());
+        //}
+        //Debug.Log(turnsGraphPoints);
+        UpdateGraph(turnsGraphPoints);//problem
     }
 
     //Function to create each physical point on the graph
@@ -138,7 +154,7 @@ public class TurnOverlayController : MonoBehaviour
         int multiplier = 0;
         while (sampledPoints.Count < Math.Min(maxDotsVisible, points.Count))
         {
-            sampledPoints.Add(points[multiplier * indexIncr]);
+            sampledPoints.Add(points[multiplier * indexIncr]);//having trouble with this one
             multiplier++;
         }
         return sampledPoints;
