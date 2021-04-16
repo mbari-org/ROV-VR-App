@@ -118,11 +118,11 @@ public class WebCam : MonoBehaviour
 
     void DisplayCamera(Dropdown dropdown, int displayIdx, WebCamDevice[] devices)
     {
+        int prevCamIdx;
+
         // Reset display if [Select Camera] is chosen
         if (dropdown.value == 0)
         {
-            int prevCamIdx;
-
             if (displayIdx == -2) // Left Skybox camera feed
             {
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), LskyBoxDefaultTexture);
@@ -140,19 +140,6 @@ public class WebCam : MonoBehaviour
                 prevCamIdx = displayCameraIdxs[displayIdx];
                 displayCameraIdxs[displayIdx] = -1;
             }
-            // Turn off camera if no other displays are using it
-            if (prevCamIdx != -1) // Only run the check for valid cameras
-            {
-                // Check if the camera index is not being used by either the skybox or the other displays
-                if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
-                {
-                    if (camList[prevCamIdx].isPlaying)
-                    {
-                        camList[prevCamIdx].Stop();
-                    }
-                        
-                }
-            }
         }
 
         // Update camera display if a camera is chosen
@@ -164,27 +151,55 @@ public class WebCam : MonoBehaviour
             {
                 //LskyBoxTexture = camList[cameraIdx];
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), camList[cameraIdx]);
+                prevCamIdx = LskyboxCameraIdx;
                 LskyboxCameraIdx = cameraIdx;
             } else if (displayIdx == -1) // Right Skybox camera feed
             {
                 //RskyBoxTexture = camList[cameraIdx];
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), camList[cameraIdx]);
+                prevCamIdx = RskyboxCameraIdx;
                 RskyboxCameraIdx = cameraIdx;
             } else // Non-skybox camera feed
             {
                 backgroundArray[displayIdx].texture = camList[cameraIdx];
+                prevCamIdx = displayCameraIdxs[displayIdx];
                 displayCameraIdxs[displayIdx] = cameraIdx;
 
                 waitingCamList.Add(cameraIdx);
                 waitingDisplayList.Add(displayIdx);
             }
 
+            // Turn off previous camera if no other displays are using it
+            if (prevCamIdx != -1) // Only run the check for valid cameras
+            {
+                // Check if the camera index is not being used by either the skybox or the other displays
+                if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+                {
+                    if (camList[prevCamIdx].isPlaying)
+                    {
+                        camList[prevCamIdx].Stop();
+                    }
+
+                }
+            }
+
             // Play camera if not already playing
             if (!camList[cameraIdx].isPlaying)
             {
+                // Manually change resolution for Blackmagic cameras
+                if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") || 
+                    (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+                {
+                    camList[cameraIdx].requestedHeight = 2160;
+                    camList[cameraIdx].requestedWidth = 3840;
+                }
+
                 camList[cameraIdx].Play();
+                Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
             }
         }
+
+
     }
 
     bool AdjustDisplayRatio(int displayIdx, int cameraIdx)
