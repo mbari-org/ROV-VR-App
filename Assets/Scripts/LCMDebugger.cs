@@ -24,7 +24,6 @@ public class LCMDebugger : MonoBehaviour
 
     private List<String> recievedChannels;
     private String lastMessageTime;
-    int i = 0;
 
     // Start is called before the first frame update
     void Start()
