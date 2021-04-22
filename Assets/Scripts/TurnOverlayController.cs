@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;//why?
 using TMPro;
 using System;
+using System.Linq;//allows list.skip for sampling
 using System.Net;//why?
 using System.IO.Ports;
 using System.Security.AccessControl;
@@ -30,8 +31,10 @@ public class TurnOverlayController : MonoBehaviour
     private RectTransform turnsGraphContainer;
     private Transform turnsGraphTransform;
     private List<GameObject> gameObjectList; //list of dots
+    //private List<Double> SamplePoints; //list of sample points 'maxDotsVisible' long at most *delete
     public GameObject dot;
     private int maxDotsVisible = 100; //max allowable # of historical turn data points
+    private int sampleRate = 10; //rate of sampling latest live data, grab 1 of every (10) points for list
 
     public List<double> _valueList;
 
@@ -61,7 +64,8 @@ public class TurnOverlayController : MonoBehaviour
         turnsGraphTransform = turnsGraphContainerGameObject.GetComponent<Transform>();
 
         // Initialize list of points
-        gameObjectList = new List<GameObject>();
+        gameObjectList = new List<GameObject>();//point objects
+        //samplePointsList = new List<Double>();//point values (live data)*delete
 
         //Test point
         //CreatePoint(-8, -8);
@@ -107,9 +111,6 @@ public class TurnOverlayController : MonoBehaviour
         }
         gameObjectList.Clear();
 
-        //Creat new graph
-        //double xSize = graphWidth / maxAvailableVisible;
-        //double xMax = valueList.Count;
         int xIndex = 0;
         GameObject lastPointGameObject = null;
         for (int i = Math.Max(valueList.Count - maxDotsVisible, 0); i < valueList.Count; i++)
@@ -133,7 +134,7 @@ public class TurnOverlayController : MonoBehaviour
         UpdateTurnValues();
         UpdateCompassOverlay();
         UpdateTextDisplay();
-        _valueList.Add(radians);//problem
+        _valueList.Add(radians);//problem (? adds point to list each frame)
         List<double> turnsGraphPoints = SamplePoints(_valueList);
         //foreach (var x in _valueList)//shows growing list, not restricted list? for debugging (_valueList or turnsGraphPoints)
         //{
@@ -152,15 +153,24 @@ public class TurnOverlayController : MonoBehaviour
         return point;
     }
 
-    //Creates list of ppoints from livestream data
+    //Creates list of points from livestream data, takes sample of most recent data
     private List<Double> SamplePoints(List<Double> points)
     {
-        int indexIncr = points.Count / maxDotsVisible;
         List<Double> sampledPoints = new List<Double>();
+        //points = results.Skip(results.Count - 10).Select(x => maxDotsVisible);
+        var sampledPointsVar = points.Skip(Math.Max(0, points.Count() - (maxDotsVisible * sampleRate)));
+        //put into list
+        foreach (var value in sampledPointsVar)
+        {
+            sampledPoints.Add(value);
+        }
+        //reverse list
+        sampledPoints.Reverse();
+        //sample list
         int multiplier = 0;
         while (sampledPoints.Count < Math.Min(maxDotsVisible, points.Count))
         {
-            sampledPoints.Add(points[multiplier * indexIncr]);//having trouble with this one
+            sampledPoints.Add(points[multiplier * sampleRate]);//add every 10th point to list
             multiplier++;
         }
         return sampledPoints;
