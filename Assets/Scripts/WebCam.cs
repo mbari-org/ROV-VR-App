@@ -40,8 +40,8 @@ public class WebCam : MonoBehaviour
     public GameObject display5;
 
     // List of display gameobjects and their components
-    private GameObject[] displayArray = new GameObject[numDisplays]; 
-    private RawImage[] backgroundArray = new RawImage[numDisplays]; 
+    private GameObject[] displayArray = new GameObject[numDisplays];
+    private RawImage[] backgroundArray = new RawImage[numDisplays];
     private AspectRatioFitter[] aspectRatioArray = new AspectRatioFitter[numDisplays];
     private Dropdown[] dropdownArray = new Dropdown[numDisplays];
 
@@ -53,7 +53,7 @@ public class WebCam : MonoBehaviour
 
     // For dropdown menu
     List<string> cameraNameList = new List<string>();
-    
+
 
     void Start()
     {
@@ -119,16 +119,18 @@ public class WebCam : MonoBehaviour
     void DisplayCamera(Dropdown dropdown, int displayIdx, WebCamDevice[] devices)
     {
         int prevCamIdx;
+        int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
 
         // Reset display if [Select Camera] is chosen
-        if (dropdown.value == 0)
+        if (cameraIdx == -1)
         {
             if (displayIdx == -2) // Left Skybox camera feed
             {
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), LskyBoxDefaultTexture);
                 prevCamIdx = LskyboxCameraIdx;
                 LskyboxCameraIdx = -1;
-            } else if (displayIdx == -1) // Right Skybox camera feed
+            }
+            else if (displayIdx == -1) // Right Skybox camera feed
             {
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), RskyBoxDefaultTexture);
                 prevCamIdx = RskyboxCameraIdx;
@@ -145,21 +147,21 @@ public class WebCam : MonoBehaviour
         // Update camera display if a camera is chosen
         else
         {
-            int cameraIdx = dropdown.value - 1; // Skip [Select Camera] option
-
             if (displayIdx == -2) // Left Skybox camera feed
             {
                 //LskyBoxTexture = camList[cameraIdx];
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), camList[cameraIdx]);
                 prevCamIdx = LskyboxCameraIdx;
                 LskyboxCameraIdx = cameraIdx;
-            } else if (displayIdx == -1) // Right Skybox camera feed
+            }
+            else if (displayIdx == -1) // Right Skybox camera feed
             {
                 //RskyBoxTexture = camList[cameraIdx];
                 skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), camList[cameraIdx]);
                 prevCamIdx = RskyboxCameraIdx;
                 RskyboxCameraIdx = cameraIdx;
-            } else // Non-skybox camera feed
+            }
+            else // Non-skybox camera feed
             {
                 backgroundArray[displayIdx].texture = camList[cameraIdx];
                 prevCamIdx = displayCameraIdxs[displayIdx];
@@ -168,37 +170,38 @@ public class WebCam : MonoBehaviour
                 waitingCamList.Add(cameraIdx);
                 waitingDisplayList.Add(displayIdx);
             }
+        }
 
-            // Turn off previous camera if no other displays are using it
-            if (prevCamIdx != -1) // Only run the check for valid cameras
+        // Turn off previous camera if no other displays are using it
+        if (prevCamIdx != -1) // Only run the check for valid cameras
+        {
+            // Check if the camera index is not being used by either the skybox or the other displays
+            if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
             {
-                // Check if the camera index is not being used by either the skybox or the other displays
-                if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+                if (camList[prevCamIdx].isPlaying)
                 {
-                    if (camList[prevCamIdx].isPlaying)
-                    {
-                        camList[prevCamIdx].Stop();
-                    }
-
+                    Debug.Log("Stopping camera " + camList[prevCamIdx].deviceName);
+                    camList[prevCamIdx].Stop();
                 }
-            }
-
-            // Play camera if not already playing
-            if (!camList[cameraIdx].isPlaying)
-            {
-                // Manually change resolution for Blackmagic cameras
-                if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") || 
-                    (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
-                {
-                    camList[cameraIdx].requestedHeight = 2160;
-                    camList[cameraIdx].requestedWidth = 3840;
-                }
-
-                camList[cameraIdx].Play();
-                Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
             }
         }
 
+        // Play camera if not already playing
+        if (!camList[cameraIdx].isPlaying)
+        {
+            // Manually change resolution for Blackmagic cameras
+            if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") ||
+                (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+            {
+                camList[cameraIdx].requestedHeight = 2160;
+                camList[cameraIdx].requestedWidth = 3840;
+            }
+
+            camList[cameraIdx].Play();
+            Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
+            Debug.Log("Frame height: " + camList[cameraIdx].height.ToString());
+            Debug.Log("Frame width: " + camList[cameraIdx].width.ToString());
+        }
 
     }
 
@@ -236,7 +239,7 @@ public class WebCam : MonoBehaviour
         if (waitingCamList.Count != 0)
         {
             // Iterate backwards to ensure removal doesn't break indexing
-            for (int i = waitingCamList.Count-1; i >= 0; i--)
+            for (int i = waitingCamList.Count - 1; i >= 0; i--)
             {
                 int displayIdx = waitingDisplayList[i];
                 int cameraIdx = waitingCamList[i];
