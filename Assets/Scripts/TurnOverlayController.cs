@@ -157,10 +157,10 @@ public class TurnOverlayController : MonoBehaviour
     private List<Double> SamplePoints(List<Double> points)
     {
         List<Double> sampledPoints = new List<Double>();
-        //points = results.Skip(results.Count - 10).Select(x => maxDotsVisible);
+        //skip to last x values in list if list is longer than maxDotsVisible * sampleRate. Cannot skip negative numbers
         var sampledPointsVar = points.Skip(Math.Max(0, points.Count() - (maxDotsVisible * sampleRate)));
         //put into list
-        foreach (var value in sampledPointsVar)
+        foreach (var value in sampledPointsVar) //var != list. thus every value in var must be added to list seperately.
         {
             sampledPoints.Add(value);
         }
@@ -170,7 +170,8 @@ public class TurnOverlayController : MonoBehaviour
         int multiplier = 0;
         while (sampledPoints.Count < Math.Min(maxDotsVisible, points.Count))
         {
-            sampledPoints.Add(points[multiplier * sampleRate]);//add every 10th point to list
+            //add every 10th point to list
+            sampledPoints.Add(points[multiplier * sampleRate]);
             multiplier++;
         }
         return sampledPoints;

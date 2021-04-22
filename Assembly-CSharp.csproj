@@ -119,7 +119,6 @@
      <Compile Include="Assets\Scripts\SettingsManager.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\Scripts\TurnOverlayController.cs" />
-     <Compile Include="Assets\Scripts\TurnsTake2.cs" />
      <Compile Include="Assets\Scripts\VRInputModule.cs" />
      <Compile Include="Assets\Scripts\WebCam.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
