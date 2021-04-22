@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -63,6 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraEditor.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraManagerEditor.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraMaterialApplyEditor.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraMeshApplyEditor.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraUGUIComponentEditor.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\Editor\ConditionalCompilationUtility.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\Editor\CurvedUIHandSwitcherEditor.cs" />
     <Compile Include="Assets\CurvedUI\Scripts\Editor\CurvedUIInputModuleEditor.cs" />

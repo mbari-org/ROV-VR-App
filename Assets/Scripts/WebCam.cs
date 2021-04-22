@@ -187,22 +187,25 @@ public class WebCam : MonoBehaviour
         }
 
         // Play camera if not already playing
-        if (!camList[cameraIdx].isPlaying)
+        if (cameraIdx != -1)
         {
-            // Manually change resolution for Blackmagic cameras
-            if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") ||
-                (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+            if (!camList[cameraIdx].isPlaying)
             {
-                camList[cameraIdx].requestedHeight = 2160;
-                camList[cameraIdx].requestedWidth = 3840;
+                // Manually change resolution for Blackmagic cameras
+                if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") ||
+                    (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+                {
+                    camList[cameraIdx].requestedHeight = 2160;
+                    camList[cameraIdx].requestedWidth = 3840;
+                }
+                camList[cameraIdx].requestedFPS = 24;
+
+                camList[cameraIdx].Play();
+                Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
+                Debug.Log("Frame height: " + camList[cameraIdx].height.ToString());
+                Debug.Log("Frame width: " + camList[cameraIdx].width.ToString());
             }
-
-            camList[cameraIdx].Play();
-            Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
-            Debug.Log("Frame height: " + camList[cameraIdx].height.ToString());
-            Debug.Log("Frame width: " + camList[cameraIdx].width.ToString());
         }
-
     }
 
     bool AdjustDisplayRatio(int displayIdx, int cameraIdx)
