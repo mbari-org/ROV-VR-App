@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -63,6 +63,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AVProLiveCamera\Demos\AVProLiveCameraCameraExplorerDemo.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Demos\MaterialMappingDemo\AVProLiveCameraMaterialMappingDemo.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Demos\Scripts\AutoRotate.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Demos\Scripts\QuickDeviceMenu.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Demos\Shared\DemoInfo.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCamera.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraApplyUITextureNGUI.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraGUIDisplay.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraGrabber.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraManager.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraMaterialApply.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraMeshApply.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Components\AVProLiveCameraUGUIComponent.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Interface\AVProLiveCameraPlugin.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Wrapper\AVProLiveCameraDevice.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Wrapper\AVProLiveCameraDeviceMode.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Wrapper\AVProLiveCameraFormatConverter.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Wrapper\AVProLiveCameraPixelBuffer.cs" />
+    <Compile Include="Assets\AVProLiveCamera\Scripts\Wrapper\AVProLiveCameraSettings.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_AnimateCurvedFillOnStart.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_CameraController.cs" />
     <Compile Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\CUI_CameraRotationOnButtonHeld.cs" />
@@ -126,6 +145,7 @@
     <Compile Include="Assets\Scripts\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\Scripts\SkyboxTextureManager.cs" />
     <Compile Include="Assets\Scripts\TurnOverlayController.cs" />
     <Compile Include="Assets\Scripts\VRInputModule.cs" />
     <Compile Include="Assets\Scripts\WebCam.cs" />
@@ -143,29 +163,43 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_YUY22RGBA.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_HDYC2RGBA.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_Shared.cginc" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_Deinterlace.shader" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFLinear2sRGB.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\CurvedUI\CurvedUI_changelog.txt" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_YV12.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\FillBackground.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_RAW_BGRA2RGBA.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFBumpToNormal.shader" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFPackOccMetalRough.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_RAW_Mono8.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_IMGUI.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\CurvedUI\Demo Scenes\Demo Scenes Content\OverlayBlend.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\AVProLiveCamera\Shaders\FillBackground_Transparent.shader" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFFlipTexture.shader" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFColorSpace.cginc" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_UYVY2RGBA.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_IMGUITransparent.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_YVYU2RGBA .shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\AVProLiveCamera\Shaders\AVProLiveCamera_YUV_I420.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />

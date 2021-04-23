@@ -28,11 +28,6 @@ public class WebCam : MonoBehaviour
     private List<WebCamTexture> camList = new List<WebCamTexture>();
 
     // Gameobjects that need to be set in inspector menu
-    public Dropdown RskyBoxDropdown;
-    public Dropdown LskyBoxDropdown;
-    public Material skyBoxMaterial;
-    public Texture LskyBoxDefaultTexture;
-    public Texture RskyBoxDefaultTexture;
     public GameObject display1;
     public GameObject display2;
     public GameObject display3;
@@ -48,8 +43,6 @@ public class WebCam : MonoBehaviour
     // List containing what camera index is displayed on each display
     // -1 if display is inactive
     private int[] displayCameraIdxs = new int[numDisplays];
-    private int LskyboxCameraIdx = -1; // Initialize skybox camera idx value
-    private int RskyboxCameraIdx = -1; // Initialize skybox camera idx value
 
     // For dropdown menu
     List<string> cameraNameList = new List<string>();
@@ -95,18 +88,12 @@ public class WebCam : MonoBehaviour
         }
 
         // Update dropdown options
-        LskyBoxDropdown.ClearOptions();
-        RskyBoxDropdown.ClearOptions();
-        LskyBoxDropdown.AddOptions(cameraNameList);
-        RskyBoxDropdown.AddOptions(cameraNameList);
         for (int i = 0; i < numDisplays; i++)
         {
             dropdownArray[i].ClearOptions();
             dropdownArray[i].AddOptions(cameraNameList);
         }
         // TODO: Insert this in the above loop without things breaking
-        LskyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(LskyBoxDropdown, (int)-2, devices); });
-        RskyBoxDropdown.onValueChanged.AddListener(delegate { DisplayCamera(RskyBoxDropdown, (int)-1, devices); });
         dropdownArray[0].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[0], (int)0, devices); });
         dropdownArray[1].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[1], (int)1, devices); });
         dropdownArray[2].onValueChanged.AddListener(delegate { DisplayCamera(dropdownArray[2], (int)2, devices); });
@@ -124,59 +111,27 @@ public class WebCam : MonoBehaviour
         // Reset display if [Select Camera] is chosen
         if (cameraIdx == -1)
         {
-            if (displayIdx == -2) // Left Skybox camera feed
-            {
-                skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), LskyBoxDefaultTexture);
-                prevCamIdx = LskyboxCameraIdx;
-                LskyboxCameraIdx = -1;
-            }
-            else if (displayIdx == -1) // Right Skybox camera feed
-            {
-                skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), RskyBoxDefaultTexture);
-                prevCamIdx = RskyboxCameraIdx;
-                RskyboxCameraIdx = -1;
-            }
-            else // Non-skybox camera feed
-            {
-                backgroundArray[displayIdx].texture = null;
-                prevCamIdx = displayCameraIdxs[displayIdx];
-                displayCameraIdxs[displayIdx] = -1;
-            }
+            backgroundArray[displayIdx].texture = null;
+            prevCamIdx = displayCameraIdxs[displayIdx];
+            displayCameraIdxs[displayIdx] = -1;
         }
 
         // Update camera display if a camera is chosen
         else
         {
-            if (displayIdx == -2) // Left Skybox camera feed
-            {
-                //LskyBoxTexture = camList[cameraIdx];
-                skyBoxMaterial.SetTexture(Shader.PropertyToID("_LTex"), camList[cameraIdx]);
-                prevCamIdx = LskyboxCameraIdx;
-                LskyboxCameraIdx = cameraIdx;
-            }
-            else if (displayIdx == -1) // Right Skybox camera feed
-            {
-                //RskyBoxTexture = camList[cameraIdx];
-                skyBoxMaterial.SetTexture(Shader.PropertyToID("_RTex"), camList[cameraIdx]);
-                prevCamIdx = RskyboxCameraIdx;
-                RskyboxCameraIdx = cameraIdx;
-            }
-            else // Non-skybox camera feed
-            {
-                backgroundArray[displayIdx].texture = camList[cameraIdx];
-                prevCamIdx = displayCameraIdxs[displayIdx];
-                displayCameraIdxs[displayIdx] = cameraIdx;
+            backgroundArray[displayIdx].texture = camList[cameraIdx];
+            prevCamIdx = displayCameraIdxs[displayIdx];
+            displayCameraIdxs[displayIdx] = cameraIdx;
 
-                waitingCamList.Add(cameraIdx);
-                waitingDisplayList.Add(displayIdx);
-            }
+            waitingCamList.Add(cameraIdx);
+            waitingDisplayList.Add(displayIdx);
         }
 
         // Turn off previous camera if no other displays are using it
         if (prevCamIdx != -1) // Only run the check for valid cameras
         {
             // Check if the camera index is not being used by either the skybox or the other displays
-            if (RskyboxCameraIdx != prevCamIdx && LskyboxCameraIdx != prevCamIdx && !displayCameraIdxs.Contains(prevCamIdx))
+            if (!displayCameraIdxs.Contains(prevCamIdx))
             {
                 if (camList[prevCamIdx].isPlaying)
                 {
@@ -187,22 +142,25 @@ public class WebCam : MonoBehaviour
         }
 
         // Play camera if not already playing
-        if (!camList[cameraIdx].isPlaying)
+        if (cameraIdx != -1)
         {
-            // Manually change resolution for Blackmagic cameras
-            if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") ||
-                (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+            if (!camList[cameraIdx].isPlaying)
             {
-                camList[cameraIdx].requestedHeight = 2160;
-                camList[cameraIdx].requestedWidth = 3840;
+                // Manually change resolution for Blackmagic cameras
+                if ((camList[cameraIdx].deviceName == "Blackmagic WDM Capture") ||
+                    (camList[cameraIdx].deviceName == "Blackmagic WDM Capture 1"))
+                {
+                    camList[cameraIdx].requestedHeight = 2160;
+                    camList[cameraIdx].requestedWidth = 3840;
+                }
+                camList[cameraIdx].requestedFPS = 24;
+
+                camList[cameraIdx].Play();
+                Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
+                Debug.Log("Frame height: " + camList[cameraIdx].height.ToString());
+                Debug.Log("Frame width: " + camList[cameraIdx].width.ToString());
             }
-
-            camList[cameraIdx].Play();
-            Debug.Log("Turning on camera " + camList[cameraIdx].deviceName);
-            Debug.Log("Frame height: " + camList[cameraIdx].height.ToString());
-            Debug.Log("Frame width: " + camList[cameraIdx].width.ToString());
         }
-
     }
 
     bool AdjustDisplayRatio(int displayIdx, int cameraIdx)
