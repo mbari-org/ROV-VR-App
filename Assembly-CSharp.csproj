@@ -145,6 +145,7 @@
     <Compile Include="Assets\Scripts\ProjectVirtualCamera.cs" />
     <Compile Include="Assets\Scripts\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\Scripts\SkyboxTextureManager.cs" />
     <Compile Include="Assets\Scripts\TurnOverlayController.cs" />
     <Compile Include="Assets\Scripts\VRInputModule.cs" />
     <Compile Include="Assets\Scripts\WebCam.cs" />
@@ -159,7 +160,6 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabLogger.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
-    <Compile Include="Assets\TextureCopier.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
