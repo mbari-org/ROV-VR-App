@@ -58,6 +58,7 @@
      <Compile Include="Assets\Plugins\LCM\MBARI Types\mwt_status_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\mwt_target_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\position_t.cs" />
+     <Compile Include="Assets\Plugins\LCM\MBARI Types\rovvr_multiplayer_pointer_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\stereo_bounding_box_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\stereo_image_t.cs" />
      <Compile Include="Assets\Plugins\LCM\MBARI Types\string_t.cs" />
