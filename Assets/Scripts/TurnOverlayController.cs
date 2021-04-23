@@ -134,13 +134,8 @@ public class TurnOverlayController : MonoBehaviour
         UpdateTurnValues();
         UpdateCompassOverlay();
         UpdateTextDisplay();
-        _valueList.Add(radians);//problem (? adds point to list each frame)
+        _valueList.Add(radians);
         List<double> turnsGraphPoints = SamplePoints(_valueList);
-        //foreach (var x in _valueList)//shows growing list, not restricted list? for debugging (_valueList or turnsGraphPoints)
-        //{
-        //    Debug.Log(x.ToString());
-        //}
-        //Debug.Log(turnsGraphPoints);
         UpdateGraph(turnsGraphPoints);//problem
     }
 
