@@ -194,8 +194,13 @@ namespace RenderHeads.Media.AVProLiveCamera
 				}
 			}
 		}
+		public int frame;
+        public void GrabFrame()
+        {
+            frame = (int)AVProLiveCameraPlugin.GetLastFrame(_device.DeviceIndex);
+        }
 
-		private void Update()
+    private void Update()
 		{
 			if (_device != null)
 			{
