@@ -19,6 +19,16 @@ namespace CurvedUI
         bool CollideWithMyLayerOnly = false;
         [SerializeField]
         bool hideWhenNotAimingAtCanvas = false;
+
+
+
+       [SerializeField] public Canvas parentCanvas;        // the parent canvas of this UI - only needed to determine if we need the camera  
+        [SerializeField] public RectTransform rect;         // the recttransform of the UI object
+
+
+        // you can serialize this as well - do NOT assign it if the canvas render mode is overlay though
+        public Camera UICamera;
+      //  RaycastHit hitt;
 #pragma warning restore 0649
 
         // Update is called once per frame
@@ -48,7 +58,14 @@ namespace CurvedUI
                 if (Physics.Raycast(myRay, out hit, length, myLayerMask))
                 {
                     length = Vector3.Distance(hit.point, this.transform.position);
-
+                    //hitt=hit;
+                    Vector3 mousePos = Input.mousePosition;
+                    Vector2 mp = new Vector2(mousePos.x, mousePos.y);
+                    Debug.Log("MousePos=" + mp.ToString());
+                    Vector2 ray2d = new Vector2(hit.point.x, hit.point.y);
+                    Debug.Log("RayCast=" + ray2d.ToString());
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, ray2d, UICamera, out Vector2 localPos);
+                    Debug.Log("Local Position=" + localPos.ToString());
                     //Find if we hit a canvas
                     CurvedUISettings cuiSettings = hit.collider.GetComponentInParent<CurvedUISettings>();
                     if (cuiSettings != null)
@@ -69,5 +86,24 @@ namespace CurvedUI
            
 
         }
+
+        /*
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            //Vector3 mousePos = Input.mousePosition;
+            //Vector2 mp = new Vector2(mousePos.x, mousePos.y);
+            Vector2 ray2d = new Vector2(hitt.point.x, hitt.point.y);
+            Debug.Log("Event Data=" + eventData.position.ToString());
+            Debug.Log("Raycast Position=" + hitt);
+            
+            // this UI element has been clicked by the mouse so determine the local position on your UI element
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, ray2d /*eventData.position, UICamera, out Vector2 localPos);
+
+            // we now have the local click position of our rect transform, but as you want the (0,0) to be bottom-left aligned, need to adjust it
+            localPos.x += rect.rect.width / 2f;
+            localPos.y += rect.rect.height / 2f;
+
+            Debug.Log("Local Position=" + localPos.ToString());
+        } */
     }
 }
