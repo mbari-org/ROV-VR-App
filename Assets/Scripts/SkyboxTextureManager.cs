@@ -6,29 +6,49 @@ using UnityEditor;
 using System.IO;
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class SkyboxTextureManager : MonoBehaviour
 {
     public AVProLiveCamera leftAVProCamera;
     public AVProLiveCamera rightAVProCamera;
     public Material skyboxMaterial;
-  //  public bool check=false;
+    //  public bool check=false;
+    private int i = 0;
+    byte[] dataL = null;
+    byte[] dataR = null;
 
     void Update()
     {
         
+        
         if (Input.GetKeyDown("space"))
         {
+
+            dataL=CreateImageFiles(leftAVProCamera.OutputTexture);
+            dataR=CreateImageFiles(rightAVProCamera.OutputTexture);
             // check = true;
             UnityEngine.Debug.Log("Pressed");
-            CreateImageFiles(leftAVProCamera.OutputTexture, 1);
-            CreateImageFiles(rightAVProCamera.OutputTexture, 2);
-            run_cmd();
-            AssetDatabase.Refresh();
+            var assetsPath = Application.dataPath + "/Depth/disparity.jpg";
+
+            var t = Task.Run(() => writePNG(dataL,1,false));
+            var r = Task.Run(() => writePNG(dataR,2, true));
+            //AssetDatabase.ImportAsset(assetsPath);
+            //t.Wait();
+            //.Wait();
+
+            // check = true;);
+            //   CreateImageFiles(leftAVProCamera.OutputTexture, 1.ToString());
+            //   CreateImageFiles(rightAVProCamera.OutputTexture, 2.ToString());
+            //    run_cmd();
+                AssetDatabase.Refresh();
         }
 
-        
+
         //Debug.Log("SkyBoxTextureManager");
+        // CreateImageFiles(leftAVProCamera.OutputTexture, "L"+i.ToString());
+        // CreateImageFiles(rightAVProCamera.OutputTexture, "R"+i.ToString());
         skyboxMaterial.SetTexture(Shader.PropertyToID("_LTex"), leftAVProCamera.OutputTexture);
         skyboxMaterial.SetTexture(Shader.PropertyToID("_RTex"), rightAVProCamera.OutputTexture);
         //CreateImageFiles(leftAVProCamera.OutputTexture, 1);
@@ -39,9 +59,35 @@ public class SkyboxTextureManager : MonoBehaviour
 
     }
 
+    private static void writePNG(byte[] pngData, int index, bool T)
+    {
+        var path = @"C:\Users\Benjamin\Documents\ROV-VR-App\Assets\Depth\img" + index + ".jpg";
+        File.WriteAllBytes(path, pngData);
 
+         void run_cmd()
+        {
+            string fileName = @"C:\Users\Benjamin\Documents\ROV-VR-App\Assets\Depth\halo.py";
 
-    private static void CreateImageFiles(Texture tex, int index)
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo(@"C:\Program Files\Python310\python.exe", fileName)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            p.Start();
+            UnityEngine.Debug.Log("start");
+            string output = p.StandardOutput.ReadToEnd();
+            UnityEngine.Debug.Log(output);
+            p.WaitForExit();
+            UnityEngine.Debug.Log("exit");
+        }
+
+        if (T) run_cmd();
+     //   AssetDatabase.Refresh();
+    }
+
+    private static byte[] CreateImageFiles(Texture tex)
     {
         //Shoutout to https://discussions.unity.com/t/convert-texture-to-texture2d/203896
         Texture2D texture2D = new Texture2D(tex.width, tex.height, TextureFormat.RGBA32, false);
@@ -55,7 +101,7 @@ public class SkyboxTextureManager : MonoBehaviour
         texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         texture2D.Apply();
 
-        Color[] pixels = texture2D.GetPixels();
+       // Color[] pixels = texture2D.GetPixels();
 
         RenderTexture.active = currentRT;
 
@@ -65,30 +111,13 @@ public class SkyboxTextureManager : MonoBehaviour
         var pngData = texture2D.EncodeToJPG();
         if (pngData.Length < 1)
         {
-            return;
+
+           // return;
         }
-        var path = @"C:\Users\Benjamin\Documents\ROV-VR-App\Assets\Depth\img" + index + ".jpg";
-        File.WriteAllBytes(path, pngData);
-        AssetDatabase.Refresh();
+        return pngData;
+
     }
 
-    private void run_cmd()
-    {
-        string fileName = @"C:\Users\Benjamin\Documents\ROV-VR-App\Assets\Depth\halo.py";
 
-        Process p = new Process();
-        p.StartInfo = new ProcessStartInfo(@"C:\Program Files\Python310\python.exe", fileName)
-        {
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-        p.Start();
-        UnityEngine.Debug.Log("start");
-        string output = p.StandardOutput.ReadToEnd();
-        UnityEngine.Debug.Log(output);
-        p.WaitForExit();
-        UnityEngine.Debug.Log("exit");
-    }
 
 }

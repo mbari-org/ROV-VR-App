@@ -61,11 +61,11 @@ namespace CurvedUI
                     //hitt=hit;
                     Vector3 mousePos = Input.mousePosition;
                     Vector2 mp = new Vector2(mousePos.x, mousePos.y);
-                    Debug.Log("MousePos=" + mp.ToString());
+                //    Debug.Log("MousePos=" + mp.ToString());
                     Vector2 ray2d = new Vector2(hit.point.x, hit.point.y);
-                    Debug.Log("RayCast=" + ray2d.ToString());
+                //    Debug.Log("RayCast=" + ray2d.ToString());
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, ray2d, UICamera, out Vector2 localPos);
-                    Debug.Log("Local Position=" + localPos.ToString());
+                //    Debug.Log("Local Position=" + localPos.ToString());
                     //Find if we hit a canvas
                     CurvedUISettings cuiSettings = hit.collider.GetComponentInParent<CurvedUISettings>();
                     if (cuiSettings != null)

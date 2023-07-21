@@ -32,11 +32,11 @@ public class canvas_click_pos : MonoBehaviour, IPointerClickHandler
         Debug.Log("Mouse Position=" + mp);
         // this UI element has been clicked by the mouse so determine the local position on your UI element
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, mp /*eventData.position*/, UICamera, out Vector2 localPos);
-
+        Debug.Log("M Local Position (pre)=" + localPos.ToString());
         // we now have the local click position of our rect transform, but as you want the (0,0) to be bottom-left aligned, need to adjust it
         localPos.x += rect.rect.width / 2f;
         localPos.y += rect.rect.height / 2f;
 
-        Debug.Log("Local Position="+localPos.ToString());
+        Debug.Log("M Local Position="+localPos.ToString());
     }
 }
