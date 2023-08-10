@@ -276,3 +276,7 @@ C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\SteamVR_Editor.csproj.CoreCompi
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\SteamVR_Editor.csproj.CopyComplete
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\SteamVR_Editor.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\SteamVR_Editor.pdb
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.dll
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.Editor.dll
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.Editor.pdb
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.pdb

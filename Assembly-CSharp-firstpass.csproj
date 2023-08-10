@@ -911,8 +911,14 @@
  <Reference Include="Boo.Lang">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.XR.Management">
+ <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.Management.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Subsystem.Registration">
+ <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Subsystem.Registration.dll</HintPath>
  </Reference>
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
@@ -932,14 +938,14 @@
  <Reference Include="UnityEngine.XR.LegacyInputHelpers">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.XR.Management.Editor">
+ <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.Management.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Rider.Editor">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.SpatialTracking">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
- </Reference>
- <Reference Include="Unity.XR.WindowsMR.Editor">
- <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.WindowsMR.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
@@ -949,9 +955,6 @@
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
- </Reference>
- <Reference Include="Unity.XR.WindowsMR">
- <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/Unity.XR.WindowsMR.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Benjamin/Documents/ROV-VR-App/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

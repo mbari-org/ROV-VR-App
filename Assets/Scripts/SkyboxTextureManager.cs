@@ -18,11 +18,12 @@ public class SkyboxTextureManager : MonoBehaviour
     private int i = 0;
     byte[] dataL = null;
     byte[] dataR = null;
+  //  string assetsPath = Application.dataPath + "/Depth/disparity.jpg";
 
     void Update()
     {
-        
-        
+//AssetDatabase.ImportAsset(assetsPath);
+
         if (Input.GetKeyDown("space"))
         {
 
@@ -30,7 +31,7 @@ public class SkyboxTextureManager : MonoBehaviour
             dataR=CreateImageFiles(rightAVProCamera.OutputTexture);
             // check = true;
             UnityEngine.Debug.Log("Pressed");
-            var assetsPath = Application.dataPath + "/Depth/disparity.jpg";
+            
 
             var t = Task.Run(() => writePNG(dataL,1,false));
             var r = Task.Run(() => writePNG(dataR,2, true));
@@ -62,6 +63,7 @@ public class SkyboxTextureManager : MonoBehaviour
     private static void writePNG(byte[] pngData, int index, bool T)
     {
         var path = @"C:\Users\Benjamin\Documents\ROV-VR-App\Assets\Depth\img" + index + ".jpg";
+        var assetsPath = Application.dataPath + "/Depth/disparity.jpg";
         File.WriteAllBytes(path, pngData);
 
          void run_cmd()
@@ -81,6 +83,7 @@ public class SkyboxTextureManager : MonoBehaviour
             UnityEngine.Debug.Log(output);
             p.WaitForExit();
             UnityEngine.Debug.Log("exit");
+            AssetDatabase.ImportAsset(assetsPath);
         }
 
         if (T) run_cmd();

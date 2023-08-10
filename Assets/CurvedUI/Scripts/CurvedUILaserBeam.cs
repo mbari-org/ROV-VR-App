@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 namespace CurvedUI
 {
@@ -20,7 +21,7 @@ namespace CurvedUI
         [SerializeField]
         bool hideWhenNotAimingAtCanvas = false;
 
-
+        public TMP_Text distance;
 
        [SerializeField] public Canvas parentCanvas;        // the parent canvas of this UI - only needed to determine if we need the camera  
         [SerializeField] public RectTransform rect;         // the recttransform of the UI object
@@ -61,11 +62,12 @@ namespace CurvedUI
                     //hitt=hit;
                     Vector3 mousePos = Input.mousePosition;
                     Vector2 mp = new Vector2(mousePos.x, mousePos.y);
-                //    Debug.Log("MousePos=" + mp.ToString());
+                    Debug.Log("PosMouse=" + mp.ToString());
                     Vector2 ray2d = new Vector2(hit.point.x, hit.point.y);
-                //    Debug.Log("RayCast=" + ray2d.ToString());
+                    Debug.Log("PosRaycast=" + ray2d.ToString());
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, ray2d, UICamera, out Vector2 localPos);
-                //    Debug.Log("Local Position=" + localPos.ToString());
+                    Debug.Log("Local Position=" + localPos.ToString());
+                    distance.text = localPos.ToString();
                     //Find if we hit a canvas
                     CurvedUISettings cuiSettings = hit.collider.GetComponentInParent<CurvedUISettings>();
                     if (cuiSettings != null)

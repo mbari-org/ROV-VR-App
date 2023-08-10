@@ -127,8 +127,6 @@ C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.TextMeshPro.Editor.d
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.Timeline.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.Timeline.Editor.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.VSCode.Editor.dll
-C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.WindowsMR.dll
-C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.WindowsMR.Editor.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.SpatialTracking.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.UI.dll
@@ -289,11 +287,9 @@ C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.CollabProxy.Editor.p
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEngine.XR.LegacyInputHelpers.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.Rider.Editor.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.SpatialTracking.pdb
-C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.WindowsMR.Editor.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEngine.SpatialTracking.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.TextMeshPro.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.XR.LegacyInputHelpers.pdb
-C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.WindowsMR.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.UI.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\UnityEditor.TestRunner.pdb
 C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\nunit.framework.pdb
@@ -304,3 +300,9 @@ C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\Assembly-CSharp-firstpass.cspro
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\Assembly-CSharp-firstpass.csproj.CopyComplete
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\Benjamin\Documents\ROV-VR-App\obj\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.Subsystem.Registration.dll
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.dll
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.Editor.dll
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.pdb
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.Subsystem.Registration.pdb
+C:\Users\Benjamin\Documents\ROV-VR-App\Temp\bin\Debug\Unity.XR.Management.Editor.pdb
