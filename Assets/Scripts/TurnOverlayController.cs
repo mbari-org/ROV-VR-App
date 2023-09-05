@@ -120,7 +120,7 @@ public class TurnOverlayController : MonoBehaviour
             double rad = valueList[xIndex];
             double xPos = r * Math.Cos(rad);
             double yPos = r * Math.Sin(rad);
-            Debug.Log("dot info: " + rad + ", " + r + ", " + xPos + ", " + yPos);
+          //  Debug.Log("dot info: " + rad + ", " + r + ", " + xPos + ", " + yPos);
             GameObject pointGameObject = CreatePoint(xPos, yPos);
             gameObjectList.Add(pointGameObject);
             lastPointGameObject = pointGameObject;

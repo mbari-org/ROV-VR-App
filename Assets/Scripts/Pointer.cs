@@ -37,8 +37,8 @@ public class Pointer : MonoBehaviour
         Vector3 endPosition = transform.position + (transform.forward * targetLength);
         
         // Or based on hit 
-        if (hit.collider != null)
-            endPosition = hit.point;
+        if (hit.collider != null) { endPosition = hit.point; Debug.Log("HIT"); }
+            
 
         // Set position of the dot
         m_Dot.transform.position = endPosition;
